@@ -1,3 +1,5 @@
+import Contact from "@/components/Contact";
+import Experience from "@/components/Experience";
 import Hero from "@/components/Hero";
 import ProjectCard from "@/components/ProjectCard";
 import Skills from "@/components/Skills";
@@ -11,6 +13,7 @@ export default function Home() {
     <>
       <Hero />
       <section className="mx-auto max-w-5xl px-6 pb-8">
+        <Skills />
         <div className="flex items-baseline justify-between mb-8">
           <h2 className="font-mono text-sm uppercase tracking-widest text-paper-dim">
             Featured work
@@ -28,7 +31,8 @@ export default function Home() {
           ))}
         </div>
       </section>
-      <Skills />
+      <Experience compact />
+      <Contact />
     </>
   );
 }

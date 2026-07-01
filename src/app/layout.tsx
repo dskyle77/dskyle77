@@ -71,7 +71,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${mono.variable} ${sans.variable} ${display.variable} h-full`}
+      className={`${mono.variable} ${sans.variable} ${display.variable} h-full scroll-smooth`}
     >
       <head>
         <meta name="google-site-verification" content="VSfQNrDzaWkb5dBYeBDV5NBTXhBMJGBGzZR4V1jSt5o" />
