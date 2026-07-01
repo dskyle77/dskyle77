@@ -1,0 +1,47 @@
+@import "tailwindcss";
+
+:root {
+  --ink: #0b0e12;
+  --ink-raised: #12161c;
+  --paper: #edeae0;
+  --paper-dim: #9a9d97;
+  --signal: #2e9eff;
+  --line: #565c60;
+  --hairline: #22262c;
+}
+
+@theme inline {
+  --color-ink: var(--ink);
+  --color-ink-raised: var(--ink-raised);
+  --color-paper: var(--paper);
+  --color-paper-dim: var(--paper-dim);
+  --color-signal: var(--signal);
+  --color-line: var(--line);
+  --color-hairline: var(--hairline);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+  --font-display: var(--font-display);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+::selection {
+  background: var(--signal);
+  color: var(--ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--signal);
+  outline-offset: 3px;
+}
+
+.glow-text {
+  text-shadow: 0 0 24px rgba(46, 158, 255, 0.35);
+}
