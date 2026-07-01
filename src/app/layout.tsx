@@ -74,6 +74,7 @@ export default function RootLayout({
       className={`${mono.variable} ${sans.variable} ${display.variable} h-full`}
     >
       <head>
+        <meta name="google-site-verification" content="VSfQNrDzaWkb5dBYeBDV5NBTXhBMJGBGzZR4V1jSt5o" />
         <script
           type="application/ld+json"
           // eslint-disable-next-line react/no-danger
