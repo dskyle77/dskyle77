@@ -27,7 +27,7 @@ const display = Press_Start_2P({
 export const metadata: Metadata = buildMetadata({
   title: `${site.name} — ${site.role}`,
   description: site.tagline,
-  image: "/images/og-image.png"
+  image: "/images/og.png"
 });
 
 export default function RootLayout({
@@ -77,7 +77,6 @@ export default function RootLayout({
         <meta name="google-site-verification" content="VSfQNrDzaWkb5dBYeBDV5NBTXhBMJGBGzZR4V1jSt5o" />
         <script
           type="application/ld+json"
-          // eslint-disable-next-line react/no-danger
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
