@@ -76,7 +76,7 @@ export default async function ProjectDetail({
         {project.stack.map((tech) => (
           <li
             key={tech}
-            className="rounded border border-hairline px-2 py-1 font-mono text-xs text-sage"
+            className="rounded border border-hairline px-2 py-1 font-mono text-xs text-paper-dim"
           >
             {tech}
           </li>

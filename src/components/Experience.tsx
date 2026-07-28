@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { experience, type ExperienceEntry } from "@/lib/experience";
+import Reveal from "./Reveal";
 
 const typeLabel: Record<string, string> = {
   work: "Employment",
@@ -81,27 +82,29 @@ export default function Experience({ compact = false }: { compact?: boolean }) {
 
   return (
     <section id="experience" className="mx-auto max-w-5xl px-6 py-16">
-      <div className="flex items-baseline justify-between mb-10 gap-4">
-        <div>
-          <p className="font-mono text-xs uppercase tracking-widest text-signal mb-3">
-            Experience
-          </p>
-          <h2 className="font-mono font-bold text-2xl sm:text-3xl text-paper">
-            Where I&apos;ve been
-          </h2>
+      <Reveal>
+        <div className="flex items-baseline justify-between mb-10 gap-4">
+          <div>
+            <p className="font-mono text-xs uppercase tracking-widest text-signal mb-3">
+              Experience
+            </p>
+            <h2 className="font-mono font-bold text-2xl sm:text-3xl text-paper">
+              Where I&apos;ve been
+            </h2>
+          </div>
+          {compact && (
+            <Link
+              href="/about#experience"
+              className="font-mono text-xs text-signal hover:underline whitespace-nowrap"
+            >
+              Full history →
+            </Link>
+          )}
         </div>
-        {compact && (
-          <Link
-            href="/about#experience"
-            className="font-mono text-xs text-signal hover:underline whitespace-nowrap"
-          >
-            Full history →
-          </Link>
-        )}
-      </div>
+      </Reveal>
 
       <ol className="relative">
-        {/* timeline rail: left-aligned on mobile, centered on sm+ */}
+        {/* timeline rail */}
         <div
           aria-hidden="true"
           className="absolute top-0 bottom-0 w-px bg-hairline left-1.75 sm:left-1/2 sm:-translate-x-1/2"
@@ -114,26 +117,28 @@ export default function Experience({ compact = false }: { compact?: boolean }) {
             <li key={item.id} className="relative mb-10 last:mb-0">
               <span
                 aria-hidden="true"
-                className="absolute top-1.5 left-0 sm:left-1/2 sm:-translate-x-1/2 h-3.5 w-3.5 rounded-full border-2 border-signal bg-ink z-10"
+                className="absolute top-1.5 left-0 sm:left-1/2 sm:-translate-x-1/2 h-3.5 w-3.5 rounded-full border-2 border-signal bg-ink z-10 transition-transform duration-300 hover:scale-125"
               />
 
-              <div className="pl-8 sm:pl-0 sm:grid sm:grid-cols-2 sm:gap-10">
-                {isRight ? (
-                  <>
-                    <div aria-hidden="true" className="hidden sm:block" />
-                    <div className="sm:pl-10">
-                      <Card item={item} compact={compact} align="left" />
-                    </div>
-                  </>
-                ) : (
-                  <>
-                    <div className="sm:pr-10">
-                      <Card item={item} compact={compact} align="left" />
-                    </div>
-                    <div aria-hidden="true" className="hidden sm:block" />
-                  </>
-                )}
-              </div>
+              <Reveal delay={(Math.min(i + 1, 5) as 1 | 2 | 3 | 4 | 5)}>
+                <div className="pl-8 sm:pl-0 sm:grid sm:grid-cols-2 sm:gap-10">
+                  {isRight ? (
+                    <>
+                      <div aria-hidden="true" className="hidden sm:block" />
+                      <div className="sm:pl-10">
+                        <Card item={item} compact={compact} align="left" />
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div className="sm:pr-10">
+                        <Card item={item} compact={compact} align="left" />
+                      </div>
+                      <div aria-hidden="true" className="hidden sm:block" />
+                    </>
+                  )}
+                </div>
+              </Reveal>
             </li>
           );
         })}

@@ -24,11 +24,18 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
+  *,
+  *::before,
+  *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
   }
 }
 
@@ -44,4 +51,68 @@
 
 .glow-text {
   text-shadow: 0 0 24px rgba(46, 158, 255, 0.35);
+}
+
+/* ---------- lightweight reveal system ---------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* stagger helpers — applied via style or class */
+.reveal-delay-1 {
+  transition-delay: 60ms;
+}
+.reveal-delay-2 {
+  transition-delay: 120ms;
+}
+.reveal-delay-3 {
+  transition-delay: 180ms;
+}
+.reveal-delay-4 {
+  transition-delay: 240ms;
+}
+.reveal-delay-5 {
+  transition-delay: 300ms;
+}
+
+/* card hover lift — medium but not annoying */
+.card-lift {
+  transition:
+    transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.28s ease,
+    box-shadow 0.28s ease;
+}
+
+.card-lift:hover {
+  transform: translateY(-3px) scale(1.01);
+  box-shadow: 0 12px 32px -12px rgba(46, 158, 255, 0.35);
+}
+
+/* skill bar fill animation */
+@keyframes skill-fill {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.skill-bar-fill {
+  transform-origin: left;
+  transform: scaleX(0);
+}
+
+.skill-bar-fill.is-visible {
+  animation: skill-fill 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }

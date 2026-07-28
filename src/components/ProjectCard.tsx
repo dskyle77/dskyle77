@@ -5,15 +5,15 @@ export default function ProjectCard({ project }: { project: Project }) {
   return (
     <Link
       href={`/projects/${project.slug}`}
-      className="group block rounded-lg border border-hairline p-6 hover:border-signal transition-colors"
+      className="group card-lift block rounded-lg border border-hairline bg-ink-raised/40 p-6 hover:border-signal"
     >
       <div className="flex items-start justify-between gap-4">
-        <h3 className="font-mono text-lg font-semibold text-paper group-hover:text-signal transition-colors">
+        <h3 className="font-mono text-lg font-semibold text-paper group-hover:text-signal transition-colors duration-300">
           {project.title}
         </h3>
         <span
           aria-hidden="true"
-          className="font-mono text-signal opacity-0 group-hover:opacity-100 transition-opacity"
+          className="font-mono text-signal opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300"
         >
           →
         </span>
@@ -25,7 +25,7 @@ export default function ProjectCard({ project }: { project: Project }) {
         {project.stack.map((tech) => (
           <li
             key={tech}
-            className="rounded border border-line px-2 py-1 font-mono text-xs text-paper-dim"
+            className="rounded border border-line px-2 py-1 font-mono text-xs text-paper-dim group-hover:border-signal/40 transition-colors duration-300"
           >
             {tech}
           </li>

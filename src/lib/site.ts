@@ -1,9 +1,9 @@
 export const site = {
   name: "David Onyema",
   handle: "dskyle77",
-  role: "Full-Stack Developer",
+  role: "Junior Web Developer",
   tagline:
-    "I build fast, scalable web products — from company sites to admin systems — and ship them from Lagos, Nigeria.",
+    "I ship web products that actually work — company sites, admin systems, the whole stack — from Lagos, Nigeria.",
   location: "Lagos, Nigeria",
   email: "dskyle77@gmail.com",
   links: {
@@ -15,7 +15,7 @@ export const site = {
     twitter: "https://x.com/dskyle77",
   },
   currentFocus:
-    "Building complete systems end-to-end — from idea to deployment — with Next.js, TypeScript, and Firebase.",
+    "Shipping real systems end-to-end with Next.js, TypeScript, and Firebase. Currently writing a lot of .ts at Topibro.",
   stack: {
     "Web Development": [
       { name: "HTML", level: 95 },
@@ -38,16 +38,16 @@ export const site = {
 export const buildLog = [
   "$ shipped: Quicksite mini-site editor",
   "$ deployed: Blog Dashboard v2",
-  "$ optimized: LCP 2.4s -> 0.7s",
-  "$ refactored: Next.js App Router migration",
+  "$ optimized: LCP 2.4s → 0.7s",
+  "$ refactored: App Router migration",
   "$ learning: Express.js fundamentals",
   "$ built: REST API with Express",
-  "$ added: JWT authentication",
-  "$ connected: MongoDB database",
-  "$ secured: API routes with middleware",
-  "$ fixed: CORS configuration issues",
+  "$ added: JWT auth middleware",
+  "$ connected: MongoDB",
+  "$ fixed: CORS issues in prod",
   "$ created: reusable Express middleware",
   "$ integrated: Firebase Admin SDK",
   "$ debugging: async route handlers",
-  "$ planning: Quicksite backend architecture",
+  "$ writing: a lot of .ts at Topibro",
+  "$ planning: Quicksite backend",
 ] as const;
