@@ -15,9 +15,9 @@ export type ExperienceEntry = {
 
 export const experience: ExperienceEntry[] = [
   {
-    id: "quicksite",
+    id: "sitenix",
     role: "Founder & Developer",
-    org: "Quicksite",
+    org: "Sitenix",
     period: "2026 — Present",
     type: "founder",
     summary:

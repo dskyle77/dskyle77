@@ -1,83 +1,213 @@
-# David Onyema (dskyle77) — Portfolio v2
+# David Onyema (dskyle77)
 
-Rebuilt on Next.js 16 (App Router) + TypeScript + Tailwind CSS v4.
-Real content from your old React/MUI site has been migrated and rewritten
-into case-study format. Old MUI components were replaced with Tailwind
-equivalents to match this scaffold.
+> Junior Full-Stack Web Developer building modern web applications, developer tools, and products with Next.js, TypeScript, and Firebase.
 
-## What's populated already
+![Portfolio Preview](./public/og-image.png)
 
-- **lib/site.ts** — your real name, handle, GitHub, LinkedIn, itch.io,
-  Twitter, email, skills list (web + game dev). No phone number included,
-  per your instruction.
-- **lib/projects.ts** — your 4 real projects (Quicksite, Legal Baby
-  Distribution, Blog Dashboard, Max Games Maker), rewritten into
-  problem/approach/decisions/result format based on your old descriptions.
-  **Go through each one and swap in real specifics** — actual numbers,
-  actual tradeoffs, what actually went wrong. Specific beats polished.
-- **app/about/page.tsx** — your real bio, rewritten from your old
-  AboutSection.jsx content.
-- **app/contact/page.tsx** — email + GitHub + LinkedIn only. No phone
-  number, no WhatsApp deep link with digits in client-side code.
+## 👋 About Me
 
-## Before you deploy
+Hi, I'm **David Onyema**, a developer based in **Lagos, Nigeria**.
 
-1. Read through `lib/projects.ts` and tighten the problem/approach/decisions/
-   result copy — these are drafted from your old one-line descriptions, so
-   they need your real specifics.
-2. Add real project screenshots to `/public/projects/` and reference them
-   in the `image` field (currently empty).
-3. Double check `lib/site.ts` — confirm the LinkedIn URL and email are
-   exactly right.
-4. If you want the contact page to have a working in-page form (not just
-   mailto), add a form service like Formspree or Resend — say the word and
-   I'll wire it in.
+I enjoy building products from idea to deployment—whether that's a visual website builder, an npm package, or a production application for a client. I'm particularly interested in developer experience, frontend architecture, and building software that's both fast and enjoyable to use.
 
-## Local development
+Currently I'm:
 
-```bash
-npm install
-npm run dev
-```
+- 🚀 Building **SiteNix**, an AI-assisted visual website builder
+- 💼 Working as a **Junior Web Developer** at **Topibro Technologies**
+- 📦 Publishing open-source packages on npm
+- 🌱 Continuously improving my backend and system design skills
 
-If you hit a Turbopack error on Windows (native bindings issue), run:
-```bash
-npm run dev -- --webpack
-```
-Also avoid running the project from inside a OneDrive-synced folder —
-OneDrive can corrupt binary files in node_modules mid-sync.
+---
 
-## Deploy
+## 🛠 Tech Stack
 
-Push to GitHub, import on vercel.com/new. Zero config needed.
+### Frontend
 
-Once deployed, update `site.links.portfolio` in `lib/site.ts` to your real
-domain and redeploy — this powers the sitemap, canonical URLs, and Open
-Graph tags.
+- React
+- Next.js
+- TypeScript
+- JavaScript
+- Tailwind CSS
 
-## What's already handled
+### Backend
 
-- Per-page SEO metadata (`generateMetadata` on each route)
-- Auto-generated `sitemap.xml` and `robots.txt`
-- JSON-LD structured data (Person schema, all your real social links)
-- Static generation for all project pages — fast, fully crawlable
-- `next/font` self-hosted fonts (no external request, zero layout shift)
-- Reduced-motion support, visible focus states
-- Fully responsive, mobile-first
-- No phone number exposed anywhere in the codebase
+- Node.js
+- Firebase
+- REST APIs
 
-## Design system: "Circuit & Cartridge"
+### Tools
 
-- **Palette:** near-black ink (#0B0E12), warm bone-white (#EDEAE0), signal
-  blue (#2E9EFF) as the single accent, dim gray (#565C60) for secondary
-  borders/text.
-- **Type:** Press Start 2P (pixel display, used only for your name in the
-  hero) + JetBrains Mono (labels, UI, code-adjacent text) + Inter (body
-  paragraphs).
-- **Signature element:** the `StatCard` component — a game-HUD-style panel
-  (`components/StatCard.tsx`) applied to real professional facts: role,
-  location, stack, status. Borrows the visual grammar of a character sheet
-  without any game jokes — reads as competent, not cute.
-- **Restraint rule:** only the StatCard gets the glow treatment
-  (`shadow` + `glow-text` utility in globals.css). Everything else stays
-  flat and high-contrast so the one signature element actually stands out.
+- Git
+- npm
+- tsup
+- Vercel
+
+### Other
+
+- Zustand
+- Groq AI
+- shadcn/ui
+
+---
+
+# Featured Projects
+
+## 🚀 SiteNix
+
+**AI-assisted visual website builder**
+
+SiteNix is a visual website builder that allows businesses and creators to design, edit, and publish responsive websites without writing code.
+
+### Highlights
+
+- AI-assisted content generation
+- Component-based visual editor
+- Responsive layouts
+- Live editing
+- JSON node architecture
+- Firebase backend
+- Fast publishing pipeline
+
+**Stack**
+
+- Next.js
+- React
+- TypeScript
+- Firebase
+- Tailwind CSS
+- Zustand
+- Groq AI
+
+🔗 https://sitenix.app
+
+---
+
+## ⌨️ Shortcut Manager
+
+**Context-aware keyboard shortcut manager for React & Next.js**
+
+A lightweight npm package that solves keyboard shortcut conflicts by introducing scoped shortcuts and automatic priority resolution.
+
+### Features
+
+- Scoped shortcuts
+- Automatic conflict resolution
+- SSR-safe
+- React Hooks API
+- Framework-agnostic core
+- TypeScript support
+
+**Stack**
+
+- TypeScript
+- React
+- Next.js
+- npm
+- tsup
+
+📦 https://www.npmjs.com/package/@dskyle77/shortcut-manager
+
+💻 https://github.com/dskyle77/smart-shortcut-manager
+
+---
+
+## 🎵 Legal Baby Distribution
+
+Modern music distribution platform for independent artists.
+
+Built with a scalable frontend architecture, responsive layouts, and reusable UI components.
+
+**Stack**
+
+- Next.js
+- Tailwind CSS
+- shadcn/ui
+
+🔗 https://legalbabydistribution.com
+
+---
+
+## 🎓 Benzene Plus Academy
+
+A full-stack enrollment platform and content management system for one of Lagos' educational academies.
+
+Features include:
+
+- Public website
+- Admin dashboard
+- Dynamic content management
+- Blog publishing
+- Student statistics management
+- Firebase backend
+
+**Stack**
+
+- Next.js
+- TypeScript
+- Firebase
+- Tailwind CSS
+
+🔗 https://benzene-plus-academy.vercel.app
+
+---
+
+# Experience
+
+### Founder & Developer — SiteNix
+
+Building a visual website builder from scratch, including the editor architecture, backend, AI integration, deployment, and product direction.
+
+---
+
+### Junior Web Developer — Topibro Technologies
+
+Working on production web applications, internal tools, APIs, and frontend experiences while collaborating with other developers through code reviews and Git workflows.
+
+---
+
+### Freelance Web Developer
+
+Developed websites and dashboards for businesses from requirements gathering through deployment and maintenance.
+
+---
+
+# Current Focus
+
+Currently focused on:
+
+- Building SiteNix
+- TypeScript
+- Next.js
+- Backend architecture
+- Developer tooling
+- Open source
+
+---
+
+# Find Me
+
+Portfolio
+
+**https://dskyle77.vercel.app**
+
+GitHub
+
+**https://github.com/dskyle77**
+
+LinkedIn
+
+**https://linkedin.com/in/dskyle77**
+
+X
+
+**https://x.com/dskyle77**
+
+Email
+
+**dskyle77@gmail.com**
+
+---
+
+## Thanks for stopping by 👋
+
+If you're interested in collaborating, hiring me, or just talking about web development, feel free to reach out!

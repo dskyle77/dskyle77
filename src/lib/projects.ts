@@ -23,28 +23,29 @@ export const projects: Project[] = [
     slug: "sitenix",
     title: "SiteNix",
     summary:
-      "An AI-powered visual website builder that lets businesses and creators design, edit, and publish responsive websites with reusable components and real-time editing.",
+      "A visual website builder with AI-assisted content generation, reusable components, and a responsive editing experience for creating and publishing modern websites.",
 
     problem:
-      "Many website builders force users into rigid templates or overwhelm them with complex editors. I wanted to build a platform that makes professional website creation intuitive while still giving users the flexibility to customize every section without writing code.",
+      "Traditional website builders often trade flexibility for simplicity or overwhelm users with complex editing interfaces. I wanted to build a visual editor that feels approachable while still giving users precise control over their websites.",
 
     approach:
-      "Designed a component-based visual editor where websites are represented as a structured node tree instead of fixed templates. Users can build pages visually using reusable sections, responsive layouts, and AI-assisted content generation, with changes reflected instantly through a live editing experience.",
+      "Built a component-based visual editor where every website is represented as a JSON node tree. The editor supports reusable components, responsive layouts, live editing, and AI-assisted content generation while keeping rendering and state management predictable.",
 
     decisions:
-      "Built the editor around a JSON node architecture to make rendering, serialization, and future features like undo/redo, templates, and AI editing straightforward. Firebase powers authentication and persistence, while Next.js provides server-side rendering and a fast publishing pipeline. The architecture was designed with extensibility in mind, allowing new components and editing capabilities to be added without changing the editor core.",
+      "Designed the editor around a JSON node architecture instead of HTML templates, making serialization, rendering, undo/redo, reusable components, and future features like expressions and dynamic data much easier to implement. Chose Firebase to simplify authentication and persistence while focusing development effort on the editor experience.",
 
     result:
-      "SiteNix has evolved into a scalable website-building platform with responsive editing, reusable components, AI-assisted workflows, live previews, and publishing support. The underlying architecture makes it easy to introduce new features while keeping the editing experience fast and predictable.",
+      "SiteNix provides a scalable visual editing platform with reusable components, responsive editing, live previews, AI-assisted content generation, and one-click publishing. The underlying architecture allows new components and editor features to be introduced without redesigning the core system.",
 
     stack: [
-      "Next.js",
       "TypeScript",
       "React",
+      "Next.js",
       "Firebase",
       "Tailwind CSS",
       "Zustand",
       "Groq AI",
+      "Cloudinary",
     ],
 
     liveUrl: "https://sitenix.app",

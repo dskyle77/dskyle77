@@ -36,7 +36,7 @@ export const site = {
 } as const;
 
 export const buildLog = [
-  "$ shipped: Quicksite mini-site editor",
+  "$ shipped: Sitenix mini-site editor",
   "$ deployed: Blog Dashboard v2",
   "$ optimized: LCP 2.4s → 0.7s",
   "$ refactored: App Router migration",
@@ -49,5 +49,5 @@ export const buildLog = [
   "$ integrated: Firebase Admin SDK",
   "$ debugging: async route handlers",
   "$ writing: a lot of .ts at Topibro",
-  "$ planning: Quicksite backend",
+  "$ planning: Sitenix backend",
 ] as const;
