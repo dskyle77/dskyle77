@@ -20,21 +20,60 @@ export type Project = {
 
 export const projects: Project[] = [
   {
-    slug: "quicksite",
-    title: "Quicksite",
+    slug: "sitenix",
+    title: "SiteNix",
     summary:
-      "A platform for creating and managing business mini-sites with reusable sections, live editing, and custom branding.",
+      "An AI-powered visual website builder that lets businesses and creators design, edit, and publish responsive websites with reusable components and real-time editing.",
+
     problem:
-      "Small businesses need a web presence fast, but most site builders are either too rigid (fixed templates) or too complex (full CMS platforms) for someone without technical skills to use confidently.",
+      "Many website builders force users into rigid templates or overwhelm them with complex editors. I wanted to build a platform that makes professional website creation intuitive while still giving users the flexibility to customize every section without writing code.",
+
     approach:
-      "Built an editor around reusable, swappable sections rather than fixed page templates — so a business owner can assemble a site from components (hero, gallery, contact, pricing) and see changes live, without touching code.",
+      "Designed a component-based visual editor where websites are represented as a structured node tree instead of fixed templates. Users can build pages visually using reusable sections, responsive layouts, and AI-assisted content generation, with changes reflected instantly through a live editing experience.",
+
     decisions:
-      "Chose Firebase over a custom backend to move fast on auth, storage, and realtime sync for the live-editing experience — trading some backend flexibility for a much shorter path to a working product. Built the editor state management to support undo/redo from day one, since non-technical users make a lot of exploratory edits.",
+      "Built the editor around a JSON node architecture to make rendering, serialization, and future features like undo/redo, templates, and AI editing straightforward. Firebase powers authentication and persistence, while Next.js provides server-side rendering and a fast publishing pipeline. The architecture was designed with extensibility in mind, allowing new components and editing capabilities to be added without changing the editor core.",
+
     result:
-      "Live and in use. The reusable-section architecture turned out to be the right call — adding new section types is now fast because they all share the same editing and rendering contract.",
-    stack: ["Next.js", "TypeScript", "Firebase", "Tailwind CSS"],
-    liveUrl: "https://quicksiteio.vercel.app/",
-    image: "/image-previews/quicksite.png",
+      "SiteNix has evolved into a scalable website-building platform with responsive editing, reusable components, AI-assisted workflows, live previews, and publishing support. The underlying architecture makes it easy to introduce new features while keeping the editing experience fast and predictable.",
+
+    stack: [
+      "Next.js",
+      "TypeScript",
+      "React",
+      "Firebase",
+      "Tailwind CSS",
+      "Zustand",
+      "Groq AI",
+    ],
+
+    liveUrl: "https://sitenix.app",
+    image: "/image-previews/sitenix.png",
+    featured: true,
+  },
+  {
+    slug: "shortcut-manager",
+    title: "Shortcut Manager",
+    summary:
+      "A context-aware keyboard shortcut manager for React and Next.js that enables scoped shortcuts, automatic conflict resolution, and SSR-safe registration.",
+
+    problem:
+      "Modern web applications often contain multiple interfaces—such as modals, side panels, and editors—that reuse the same keyboard shortcuts. Coordinating these shortcuts manually leads to conflicting behavior, unnecessary state management, and difficult-to-maintain code.",
+
+    approach:
+      "Built a lightweight shortcut system that introduces scoped keyboard shortcuts. Developers register shortcuts declaratively with React hooks while a central manager automatically resolves conflicts by prioritizing the most recently activated scope. The library also exposes a framework-agnostic core for use outside React.",
+
+    decisions:
+      "Separated the shortcut engine from the React integration to keep the core reusable and framework-independent. The React API was designed around hooks instead of imperative event listeners, allowing automatic registration, cleanup, SSR compatibility, configurable priorities, and safe handling of form inputs without additional boilerplate.",
+
+    result:
+      "Published as an npm package under @dskyle77/shortcut-manager. The library provides context-aware shortcut management, scoped priority resolution, automatic cleanup, and a developer-friendly API for building keyboard-driven React and Next.js applications.",
+
+    stack: ["TypeScript", "React", "Next.js", "npm", "tsup"],
+
+    repoUrl: "https://github.com/dskyle77/smart-shortcut-manager",
+    liveUrl: "https://www.npmjs.com/package/@dskyle77/shortcut-manager",
+    image: "/image-previews/shortcut-manager.png",
     featured: true,
   },
   {
@@ -54,43 +93,6 @@ export const projects: Project[] = [
     liveUrl: "https://legalbabydistribution.com/",
     image: "/image-previews/legalbaby.png",
     featured: true,
-  },
-  {
-    slug: "blog-dashboard",
-    title: "Blog Dashboard",
-    summary:
-      "Content management dashboard with live editing, post management, and a responsive UI for smooth publishing workflows.",
-    problem:
-      "Writers and editors need a dashboard that doesn't get in the way — most CMS admin panels are either bloated or too basic to support a real editorial workflow.",
-    approach:
-      "Built a focused dashboard around the core publishing loop: draft, preview, edit, publish — with state kept predictable so the UI never lags behind what's actually saved.",
-    decisions:
-      "Chose Zustand over Redux for state management — the app didn't need Redux's middleware ecosystem, and Zustand's smaller API meant less boilerplate and faster iteration on the editing UI.",
-    result:
-      "A responsive, working dashboard that handles the full publishing workflow. The lighter state management choice paid off in how quickly new features could be added without fighting the store.",
-    stack: ["React", "Zustand", "Tailwind CSS"],
-    liveUrl: "https://blogsitegxu.vercel.app/",
-    repoUrl: "https://github.com/dskyle77",
-    featured: false,
-  },
-  {
-    slug: "max-games-maker",
-    title: "Max Games Maker",
-    summary:
-      "Experimental platform for creating and testing mini games with editable templates and mobile-friendly tools.",
-    problem:
-      "I wanted a sandbox to combine my game development background with web tooling — a place to test how far a browser-based, mobile-friendly game editor could go without a heavy game engine.",
-    approach:
-      "Started with editable game templates rather than a from-scratch editor, so the project could prove out the core interaction model — pick a template, customize it, play it on mobile — before investing in more general tooling.",
-    decisions:
-      "Kept the stack deliberately lightweight (React + Material UI) instead of reaching for a canvas/game-engine library, since the goal was fast iteration on the editing experience, not engine-level performance.",
-    result:
-      "A working experimental platform that validated the template-first approach. It also fed directly back into my day-to-day web work — some of the state and UI patterns from this project show up in later projects like Blog Dashboard.",
-    stack: ["React", "Material UI"],
-    liveUrl: "https://max-games-maker-site.vercel.app",
-    repoUrl: "https://github.com/dskyle77",
-    image: "",
-    featured: false,
   },
   {
     slug: "benzene-plus-academy",
