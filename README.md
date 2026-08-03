@@ -13,7 +13,7 @@ I enjoy building products from idea to deployment—whether that's a visual webs
 Currently I'm:
 
 - 🚀 Building **SiteNix**, an AI-assisted visual website builder
-- 💼 Working as a **Junior Web Developer** at **Topibro Technologies**
+- 💼 Working as a **Junior Full-Stack Developer** at **Topibro Technologies**
 - 📦 Publishing open-source packages on npm
 - 🌱 Continuously improving my backend and system design skills
 
@@ -159,7 +159,7 @@ Building a visual website builder from scratch, including the editor architectur
 
 ---
 
-### Junior Web Developer — Topibro Technologies
+### Junior Full-Stack Developer — Topibro Technologies
 
 Working on production web applications, internal tools, APIs, and frontend experiences while collaborating with other developers through code reviews and Git workflows.
 

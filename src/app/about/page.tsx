@@ -48,7 +48,7 @@ export default function AboutPage() {
             <p>
               I&apos;m {site.name} — online I go by{" "}
               <span className="text-paper font-medium">{site.handle}</span>.
-              Junior Web Developer based in Lagos. I&apos;ve spent the last
+              Junior Full-Stack Developer based in Lagos. I&apos;ve spent the last
               few years building sites, full-stack apps, and internal tools
               with Next.js, React, TypeScript, and Firebase. Mostly just
               trying to make things that work well and don&apos;t fall apart

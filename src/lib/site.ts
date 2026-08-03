@@ -1,7 +1,7 @@
 export const site = {
   name: "David Onyema",
   handle: "dskyle77",
-  role: "Junior Web Developer",
+  role: "Junior Full-Stack Developer",
   tagline:
     "I ship web products that actually work — company sites, admin systems, the whole stack — from Lagos, Nigeria.",
   location: "Lagos, Nigeria",
