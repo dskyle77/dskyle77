@@ -116,3 +116,44 @@
 .skill-bar-fill.is-visible {
   animation: skill-fill 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
+
+/* ---------- print styles for resume ---------- */
+@media print {
+  body {
+    background: white !important;
+    color: #111 !important;
+  }
+
+  header,
+  footer,
+  .print\:hidden {
+    display: none !important;
+  }
+
+  .resume {
+    color: #111 !important;
+  }
+
+  .resume a {
+    color: #111 !important;
+    text-decoration: none !important;
+  }
+
+  .text-signal {
+    color: #0a66c2 !important;
+  }
+
+  .text-paper,
+  .text-paper-dim {
+    color: #222 !important;
+  }
+
+  .border-hairline,
+  .border-line {
+    border-color: #ccc !important;
+  }
+
+  main {
+    padding: 0 !important;
+  }
+}

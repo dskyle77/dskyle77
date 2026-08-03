@@ -12,8 +12,8 @@ export const metadata: Metadata = buildMetadata({
 });
 
 const stats = [
-  { value: "3+", label: "Years experience" },
-  { value: "15+", label: "Projects shipped" },
+  { value: "2", label: "Years experience" },
+  { value: "3", label: "Projects shipped" },
   { value: "Lagos", label: "Based in Nigeria" },
 ];
 

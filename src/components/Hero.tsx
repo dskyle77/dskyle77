@@ -43,6 +43,19 @@ export default function Hero() {
               >
                 See projects
               </a>
+              <a
+                href="/resume"
+                className="rounded-md border border-line px-5 py-2.5 font-mono text-sm font-medium text-paper hover:border-signal hover:text-signal transition-all duration-300"
+              >
+                Resume
+              </a>
+              <a
+                href="/David_Onyema_Resume.pdf"
+                download="David_Onyema_Resume.pdf"
+                className="rounded-md border border-line px-5 py-2.5 font-mono text-sm font-medium text-paper hover:border-signal hover:text-signal transition-all duration-300"
+              >
+                Download CV
+              </a>
             </div>
           </Reveal>
         </div>

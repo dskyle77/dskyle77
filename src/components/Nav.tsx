@@ -32,6 +32,9 @@ export default function Nav() {
           <Link href="/about" className="hover:text-signal transition-colors">
             About
           </Link>
+          <Link href="/resume" className="hover:text-signal transition-colors">
+            Resume
+          </Link>
           <Link href="/contact" className="hover:text-signal transition-colors">
             Contact
           </Link>
@@ -73,7 +76,7 @@ export default function Nav() {
       <div
         className={`absolute top-full left-0 w-full border-b border-hairline bg-ink transition-all duration-300 ease-in-out z-40 sm:hidden overflow-hidden ${
           isOpen
-            ? "max-h-64 opacity-100 visible"
+            ? "max-h-80 opacity-100 visible"
             : "max-h-0 opacity-0 invisible"
         }`}
       >
@@ -91,6 +94,13 @@ export default function Nav() {
             className="hover:text-signal transition-colors w-full"
           >
             About
+          </Link>
+          <Link
+            href="/resume"
+            onClick={closeMenu}
+            className="hover:text-signal transition-colors w-full"
+          >
+            Resume
           </Link>
           <Link
             href="/contact"
