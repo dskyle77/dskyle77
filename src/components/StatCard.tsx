@@ -1,7 +1,5 @@
 import { site } from "@/lib/site";
 
-// Game-HUD style character sheet. Labels stay playful, values stay real.
-
 const stats: { label: string; value: string }[] = [
   { label: "Class", value: site.role },
   { label: "Base", value: site.location },
@@ -11,7 +9,7 @@ const stats: { label: string; value: string }[] = [
 
 export default function StatCard() {
   return (
-    <div className="rounded-md border border-signal/40 bg-ink-raised p-4 shadow-[0_0_28px_-8px_rgba(46,158,255,0.45)] transition-shadow duration-300 hover:shadow-[0_0_36px_-6px_rgba(46,158,255,0.55)]">
+    <div className="rounded-md border border-signal/35 bg-ink-raised p-4 shadow-[0_0_32px_-10px_rgba(46,158,255,0.4)] transition-shadow duration-300 hover:shadow-[0_0_40px_-8px_rgba(46,158,255,0.5)]">
       <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-signal mb-3">
         // dskyle77.dat
       </p>

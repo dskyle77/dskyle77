@@ -2,10 +2,14 @@ export const site = {
   name: "David Onyema",
   handle: "dskyle77",
   role: "Junior Full-Stack Developer",
+
   tagline:
-    "I ship web products that actually work — company sites, admin systems, the whole stack — from Lagos, Nigeria.",
+    "I build and ship web products end-to-end — from responsive interfaces to APIs, databases, and deployment.",
+
   location: "Lagos, Nigeria",
+
   email: "dskyle77@gmail.com",
+
   links: {
     github: "https://github.com/dskyle77",
     linkedin: "https://www.linkedin.com/in/dskyle77/",
@@ -14,8 +18,9 @@ export const site = {
     itch: "https://dskyle77.itch.io",
     twitter: "https://x.com/dskyle77",
   },
+
   currentFocus:
-    "Shipping real systems end-to-end with Next.js, TypeScript, and Firebase. Currently writing a lot of .ts at Topibro.",
+    "Building real systems with Next.js, TypeScript, Firebase, and Node.js.",
   stack: {
     "Web Development": [
       { name: "HTML", level: 95 },

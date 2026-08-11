@@ -11,7 +11,7 @@ export default function Footer() {
   ].filter((s) => s.href);
 
   return (
-    <footer className="border-t border-hairline">
+    <footer className="border-t border-hairline mt-auto">
       <div className="mx-auto max-w-5xl px-6 py-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <p className="font-mono text-xs text-paper-dim">
           © {year} {site.name}. Built with Next.js · shipped on Vercel.
@@ -23,14 +23,14 @@ export default function Footer() {
               href={s.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-paper-dim hover:text-signal transition-colors"
+              className="text-paper-dim hover:text-signal transition-colors duration-200"
             >
               {s.label}
             </a>
           ))}
           <a
             href={`mailto:${site.email}`}
-            className="text-paper-dim hover:text-signal transition-colors"
+            className="text-paper-dim hover:text-signal transition-colors duration-200"
           >
             Email
           </a>

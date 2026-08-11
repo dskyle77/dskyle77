@@ -49,7 +49,7 @@ export default async function ProjectDetail({
     <article className="mx-auto max-w-3xl px-6 py-16">
       <Link
         href="/projects"
-        className="font-mono text-xs text-paper-dim hover:text-signal transition-colors"
+        className="font-mono text-xs text-paper-dim hover:text-signal transition-colors link-underline"
       >
         ← All projects
       </Link>
@@ -60,7 +60,7 @@ export default async function ProjectDetail({
       <p className="mt-3 text-lg text-paper-dim">{project.summary}</p>
 
       {project.image && (
-        <div className="mt-8 overflow-hidden rounded-lg border border-hairline">
+        <div className="mt-8 overflow-hidden rounded-lg border border-hairline shadow-[0_0_40px_-20px_rgba(46,158,255,0.2)]">
           <Image
             src={project.image}
             alt={project.title}
@@ -83,13 +83,13 @@ export default async function ProjectDetail({
         ))}
       </ul>
 
-      <div className="mt-6 flex gap-4">
+      <div className="mt-6 flex flex-wrap gap-3">
         {project.liveUrl && (
           <a
             href={project.liveUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="rounded-md bg-signal px-4 py-2 font-mono text-sm font-medium text-ink hover:opacity-90 transition-opacity"
+            className="btn-primary"
           >
             Live site
           </a>
@@ -99,7 +99,7 @@ export default async function ProjectDetail({
             href={project.repoUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="rounded-md border border-hairline px-4 py-2 font-mono text-sm font-medium text-paper hover:border-signal hover:text-signal transition-colors"
+            className="btn-secondary"
           >
             Source code
           </a>

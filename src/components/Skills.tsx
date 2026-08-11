@@ -48,17 +48,17 @@ export default function Skills() {
       <div className="grid gap-10 sm:grid-cols-2">
         {Object.entries(site.stack).map(([category, skills], catIndex) => (
           <Reveal key={category} delay={(catIndex + 1) as 1 | 2}>
-            <h3 className="font-mono text-xs uppercase tracking-widest text-paper-dim mb-4">
+            <h3 className="font-mono text-xs uppercase tracking-widest text-paper-dim mb-5">
               {category}
             </h3>
-            <ul className="space-y-3">
+            <ul className="space-y-3.5">
               {skills.map((skill) => (
                 <li key={skill.name}>
-                  <div className="flex items-center justify-between mb-1">
+                  <div className="flex items-center justify-between mb-1.5">
                     <span className="font-mono text-sm text-paper">
                       {skill.name}
                     </span>
-                    <span className="font-mono text-xs text-signal">
+                    <span className="font-mono text-xs text-signal tabular-nums">
                       {skill.level}%
                     </span>
                   </div>

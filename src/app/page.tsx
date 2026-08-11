@@ -25,7 +25,7 @@ export default function Home() {
             </h2>
             <Link
               href="/projects"
-              className="font-mono text-xs text-signal hover:underline"
+              className="font-mono text-xs text-signal link-underline"
             >
               All projects →
             </Link>
@@ -37,7 +37,7 @@ export default function Home() {
           <Reveal>
             <Link
               href={`/projects/${spotlight.slug}`}
-              className="group card-lift mb-6 block rounded-lg border border-hairline bg-ink-raised/40 p-6 sm:p-8 hover:border-signal"
+              className="group card-lift card-accent mb-6 block rounded-lg border border-hairline bg-ink-raised/50 p-6 sm:p-8 hover:border-signal/60"
             >
               <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
                 <div className="flex-1">
@@ -56,7 +56,7 @@ export default function Home() {
                     {spotlight.stack.map((tech) => (
                       <li
                         key={tech}
-                        className="rounded border border-line px-2.5 py-1 font-mono text-xs text-paper-dim group-hover:border-signal/40 transition-colors duration-300"
+                        className="rounded border border-line/80 px-2.5 py-1 font-mono text-xs text-paper-dim group-hover:border-signal/35 transition-colors duration-300"
                       >
                         {tech}
                       </li>
@@ -66,12 +66,12 @@ export default function Home() {
                 <div className="flex sm:flex-col items-center sm:items-end gap-3 shrink-0">
                   <span
                     aria-hidden="true"
-                    className="font-mono text-signal text-lg opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300"
+                    className="font-mono text-signal text-lg opacity-0 -translate-x-1.5 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300"
                   >
                     →
                   </span>
                   {spotlight.liveUrl && (
-                    <span className="font-mono text-[11px] text-paper-dim group-hover:text-signal transition-colors">
+                    <span className="font-mono text-[11px] text-paper-dim group-hover:text-signal transition-colors duration-300">
                       Live project
                     </span>
                   )}

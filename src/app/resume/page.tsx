@@ -100,14 +100,14 @@ export default function ResumePage() {
             <a
               href="/David_Onyema_Resume.pdf"
               download="David_Onyema_Resume.pdf"
-              className="rounded-md bg-signal px-4 py-2 font-mono text-xs uppercase tracking-wider text-ink hover:opacity-90 transition-colors"
+              className="btn-primary !text-xs !uppercase !tracking-wider !px-4 !py-2"
             >
               Download PDF
             </a>
             <PrintButton />
             <Link
               href="/"
-              className="rounded-md border border-line px-4 py-2 font-mono text-xs uppercase tracking-wider text-paper-dim hover:border-signal hover:text-signal transition-colors"
+              className="btn-secondary !text-xs !uppercase !tracking-wider !px-4 !py-2 text-paper-dim"
             >
               ← Back
             </Link>

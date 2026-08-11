@@ -34,7 +34,7 @@ export default function AboutPage() {
               alt={site.name}
               width={176}
               height={176}
-              className="w-36 h-36 sm:w-44 sm:h-44 rounded-full object-cover border border-hairline"
+              className="w-36 h-36 sm:w-44 sm:h-44 rounded-full object-cover border border-hairline shadow-[0_0_0_4px_rgba(46,158,255,0.08)]"
               priority
             />
             <h1 className="font-mono font-bold text-3xl sm:text-4xl text-paper">
@@ -86,10 +86,10 @@ export default function AboutPage() {
         </div>
 
         <Reveal>
-          <div className="mt-12 grid grid-cols-3 gap-4 rounded-md border border-hairline bg-ink-raised p-6">
+          <div className="mt-12 grid grid-cols-3 gap-4 rounded-md border border-hairline bg-ink-raised/70 p-6">
             {stats.map((stat) => (
               <div key={stat.label} className="text-center">
-                <p className="font-mono text-2xl sm:text-3xl font-bold text-signal">
+                <p className="font-mono text-2xl sm:text-3xl font-bold text-signal tabular-nums">
                   {stat.value}
                 </p>
                 <p className="mt-1 font-mono text-[10px] uppercase tracking-widest text-paper-dim">

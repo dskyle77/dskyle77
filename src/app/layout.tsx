@@ -82,7 +82,7 @@ export default function RootLayout({
       </head>
       <body className="min-h-full flex flex-col bg-ink text-paper font-sans antialiased selection:bg-signal selection:text-ink">
         <Nav />
-        <main className="flex-1">{children}</main>
+        <main className="flex-1 relative">{children}</main>
         <Footer />
       </body>
     </html>

@@ -49,7 +49,7 @@ export default function Contact() {
               rel={
                 c.href.startsWith("mailto:") ? undefined : "noopener noreferrer"
               }
-              className="group card-lift relative flex flex-col justify-between rounded-lg border border-hairline bg-ink-raised p-6 min-h-37 hover:border-signal"
+              className="group card-lift card-accent relative flex flex-col justify-between rounded-lg border border-hairline bg-ink-raised p-6 min-h-37 hover:border-signal/60"
             >
               <div className="flex items-center justify-between">
                 <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-signal">
