@@ -1,5 +1,6 @@
 import { site } from "@/lib/site";
-import Reveal from "./Reveal";
+import Reveal from "./shared/Reveal";
+import BackgroundGrid from "./shared/BackgroundGrid";
 
 const channels = [
   {
@@ -7,80 +8,128 @@ const channels = [
     value: site.email,
     href: `mailto:${site.email}`,
     hint: "Best way to reach me",
+    primary: true,
   },
   {
     label: "GitHub",
     value: `github.com/${site.handle}`,
     href: site.links.github,
-    hint: "Code & repos",
+    hint: "Code & repositories",
+    primary: false,
   },
   {
     label: "LinkedIn",
     value: "linkedin.com/in/dskyle77",
     href: site.links.linkedin,
     hint: "Professional profile",
+    primary: false,
   },
 ];
 
 export default function Contact() {
   return (
-    <section className="mx-auto max-w-3xl px-6 py-16 sm:py-24">
-      <Reveal>
-        <div className="text-center sm:text-left">
-          <p className="font-mono text-xs uppercase tracking-widest text-signal mb-3">
-            Contact
-          </p>
-          <h1 className="font-mono font-bold text-3xl sm:text-4xl text-paper mb-4">
-            Let&apos;s talk
-          </h1>
-          <p className="text-paper-dim leading-relaxed max-w-lg mb-12 mx-auto sm:mx-0">
-            Got an idea, a role, or something you want built? Email is the
-            fastest route — I actually check it.
-          </p>
-        </div>
-      </Reveal>
+    <div className="relative">
+      <BackgroundGrid size={{ x: "32px", y: "32px" }} />
+      <section className="mx-auto max-w-5xl overflow-hidden px-6 py-24 sm:py-32">
+        {/* Content */}
+        <div className="relative">
+        <Reveal>
+          <div className="max-w-2xl">
+            <div className="mb-5 flex items-center gap-3">
+              <span className="h-px w-8 bg-signal" />
+              <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-signal">
+                Contact
+              </p>
+            </div>
 
-      <div className="grid gap-4 sm:grid-cols-3">
-        {channels.map((c, i) => (
-          <Reveal key={c.label} delay={(Math.min(i + 1, 5) as 1 | 2 | 3 | 4 | 5)}>
-            <a
-              href={c.href}
-              target={c.href.startsWith("mailto:") ? undefined : "_blank"}
-              rel={
-                c.href.startsWith("mailto:") ? undefined : "noopener noreferrer"
-              }
-              className="group card-lift card-accent relative flex flex-col justify-between rounded-lg border border-hairline bg-ink-raised p-6 min-h-37 hover:border-signal/60"
+            <h2 className="font-display text-4xl leading-[1.05] tracking-tight text-paper sm:text-6xl">
+              Have something
+              <br />
+              <span className="text-paper-dim">worth building?</span>
+            </h2>
+
+            <p className="mt-6 max-w-xl text-sm leading-7 text-paper-dim sm:text-base">
+              Got an idea, a role, or something that needs to be built? Send me
+              a message. I&apos;m always interested in good problems and
+              interesting projects.
+            </p>
+          </div>
+        </Reveal>
+
+        {/* Contact links */}
+        <div className="mt-12 grid gap-3 sm:grid-cols-3">
+          {channels.map((channel, i) => (
+            <Reveal
+              key={channel.label}
+              delay={Math.min(i + 1, 5) as 1 | 2 | 3 | 4 | 5}
             >
-              <div className="flex items-center justify-between">
-                <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-signal">
-                  {c.label}
-                </p>
+              <a
+                href={channel.href}
+                target={
+                  channel.href.startsWith("mailto:") ? undefined : "_blank"
+                }
+                rel={
+                  channel.href.startsWith("mailto:")
+                    ? undefined
+                    : "noopener noreferrer"
+                }
+                className={`group relative flex min-h-36 flex-col justify-between overflow-hidden rounded-lg border p-5 transition-all duration-300 ${
+                  channel.primary
+                    ? "border-signal/30 bg-signal/5 hover:border-signal/60 hover:bg-signal/8"
+                    : "border-white/8 bg-white/2 hover:border-signal/30 hover:bg-white/4"
+                }`}
+              >
+                {/* Hover glow */}
                 <span
                   aria-hidden="true"
-                  className="font-mono text-paper-dim group-hover:text-signal group-hover:translate-x-0.5 transition-all duration-300"
-                >
-                  →
-                </span>
-              </div>
+                  className="pointer-events-none absolute -right-12 -top-12 h-24 w-24 rounded-full bg-blue-500/10 blur-3xl opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+                />
 
-              <div>
-                <p className="font-mono text-sm sm:text-base text-paper wrap-break-word group-hover:text-signal transition-colors duration-300">
-                  {c.value}
-                </p>
-                <p className="mt-1.5 font-mono text-[11px] text-paper-dim">
-                  {c.hint}
-                </p>
-              </div>
-            </a>
-          </Reveal>
-        ))}
+                <div className="relative flex items-center justify-between">
+                  <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-signal">
+                    {channel.label}
+                  </span>
+
+                  <span className="font-mono text-sm text-paper-dim transition-all duration-300 group-hover:translate-x-1 group-hover:text-signal">
+                    ↗
+                  </span>
+                </div>
+
+                <div className="relative mt-8">
+                  <p className="break-all font-mono text-sm text-paper transition-colors duration-300 group-hover:text-signal">
+                    {channel.value}
+                  </p>
+
+                  <p className="mt-1.5 font-mono text-[10px] text-paper-dim/70">
+                    {channel.hint}
+                  </p>
+                </div>
+              </a>
+            </Reveal>
+          ))}
+        </div>
+
+        {/* Footer status */}
+        <Reveal>
+          <div className="mt-10 flex flex-col gap-3 border-t border-white/[0.07] pt-5 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex items-center gap-2">
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-signal opacity-40" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-signal" />
+              </span>
+
+              <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-paper-dim">
+                Open to remote opportunities
+              </span>
+            </div>
+
+            <span className="font-mono text-[10px] text-paper-dim/60">
+              {site.location}
+            </span>
+          </div>
+        </Reveal>
       </div>
-
-      <Reveal>
-        <p className="mt-10 text-center sm:text-left font-mono text-xs text-paper-dim">
-          Based in {site.location} · Open to remote
-        </p>
-      </Reveal>
-    </section>
+      </section>
+    </div>
   );
 }

@@ -9,7 +9,7 @@ export type Project = {
   stack: string[];
   liveUrl?: string;
   repoUrl?: string;
-  image?: string;
+  images?: Array<{ src: string; alt: string }>;
   featured: boolean;
 };
 
@@ -49,7 +49,21 @@ export const projects: Project[] = [
     ],
 
     liveUrl: "https://sitenix.app",
-    image: "/image-previews/sitenix.png",
+    images: [
+      { src: "/image-previews/sitenix.png", alt: "Sitenix Home page" },
+      {
+        src: "/image-previews/sitenix-editor.png",
+        alt: "Sitenix website builder editor",
+      },
+      {
+        src: "/image-previews/sitenix-editor-2.png",
+        alt: "Portfolio built with Sitenix",
+      },
+      {
+        src: "/image-previews/sitenix-dashboard.png",
+        alt: "Sitenix dashboard",
+      },
+    ],
     featured: true,
   },
   {
@@ -74,7 +88,9 @@ export const projects: Project[] = [
 
     repoUrl: "https://github.com/dskyle77/smart-shortcut-manager",
     liveUrl: "https://www.npmjs.com/package/@dskyle77/shortcut-manager",
-    image: "/image-previews/shortcut-manager.png",
+    images: [
+      { src: "/image-previews/shortcut-manager.png", alt: "Shortcut Manager" },
+    ],
     featured: true,
   },
   {
@@ -92,7 +108,9 @@ export const projects: Project[] = [
       "Shipped and live. Working within an existing component system meant the site could go from design to production noticeably faster than building every component from scratch.",
     stack: ["Next.js", "Tailwind CSS", "shadcn/ui"],
     liveUrl: "https://legalbabydistribution.com/",
-    image: "/image-previews/legalbaby.png",
+    images: [
+      { src: "/image-previews/legalbaby.png", alt: "Legal Baby Distribution" },
+    ],
     featured: true,
   },
   {
@@ -110,7 +128,12 @@ export const projects: Project[] = [
       "Fully operational and deployed. The academy now independently publishes weekly blogs and updates top-scoring student profiles each JAMB cycle via their private dashboard, resulting in self-sustaining data management and an active pipeline of student inquiries.",
     stack: ["Next.js", "TypeScript", "Tailwind CSS", "Firebase"],
     liveUrl: "https://benzene-plus-academy.vercel.app/",
-    image: "/image-previews/benzene-plus-academy.png",
+    images: [
+      {
+        src: "/image-previews/benzene-plus-academy.png",
+        alt: "Benzene Plus Academy",
+      },
+    ],
     featured: true,
   },
 ];

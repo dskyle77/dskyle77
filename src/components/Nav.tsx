@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 "use client";
 
 import { useEffect, useState } from "react";
@@ -41,7 +42,7 @@ export default function Nav() {
         scrolled ? "nav-scrolled" : ""
       }`}
     >
-      <div className="mx-auto max-w-5xl px-6 py-4 flex items-center justify-between relative z-50 bg-ink/95">
+      <div className="mx-auto max-w-6xl px-6 py-6 flex items-center justify-between relative z-50 bg-ink/95">
         <Link
           href="/"
           onClick={closeMenu}
@@ -76,7 +77,7 @@ export default function Nav() {
           onClick={toggleMenu}
           aria-label={isOpen ? "Close menu" : "Open menu"}
           aria-expanded={isOpen}
-          className="flex sm:hidden flex-col justify-center items-center w-8 h-8 gap-[5px] focus:outline-none"
+          className="flex sm:hidden flex-col justify-center items-center w-8 h-8 gap-1.25 focus:outline-none"
         >
           <span
             className={`block h-[1.5px] w-5 bg-paper origin-center transition-transform duration-300 ease-out ${
@@ -90,7 +91,7 @@ export default function Nav() {
           />
           <span
             className={`block h-[1.5px] w-5 bg-paper origin-center transition-transform duration-300 ease-out ${
-              isOpen ? "-translate-y-[6.5px] -rotate-45" : ""
+              isOpen ? "translate-y-[-6.5px] -rotate-45" : ""
             }`}
           />
         </button>

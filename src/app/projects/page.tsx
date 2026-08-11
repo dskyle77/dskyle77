@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { buildMetadata } from "@/lib/metadata";
 import { projects } from "@/lib/projects";
-import ProjectCard from "@/components/ProjectCard";
-import Reveal from "@/components/Reveal";
+import ProjectCard from "@/components/shared/ProjectCard";
+import Reveal from "@/components/shared/Reveal";
+import BackgroundGrid from "@/components/shared/BackgroundGrid";
 
 export const metadata: Metadata = buildMetadata({
   title: "Projects",
@@ -13,26 +14,40 @@ export const metadata: Metadata = buildMetadata({
 
 export default function ProjectsPage() {
   return (
-    <section className="mx-auto max-w-5xl px-6 py-16">
-      <Reveal>
-        <p className="font-mono text-xs uppercase tracking-widest text-signal mb-3">
-          Projects
-        </p>
-        <h1 className="font-mono font-bold text-3xl sm:text-4xl text-paper mb-10">
-          Things I&apos;ve built
-        </h1>
-      </Reveal>
+    <div className="relative">
+      <BackgroundGrid size={{ x: "32px", y: "32px" }} />
+      <section className="mx-auto max-w-5xl px-6 py-12 sm:py-20">
+        <Reveal>
+          <div className="mb-10 flex items-end justify-between gap-6 border-b border-white/[0.07] pb-8">
+            <div>
+              <div className="mb-3 flex items-center gap-3">
+                <span className="h-px w-7 bg-signal" />
+                <p className="font-mono text-xs uppercase tracking-[0.18em] text-signal">
+                  Portfolio · Archive
+                </p>
+              </div>
+              <h1 className="font-display text-4xl leading-[1.05] tracking-tight text-paper sm:text-6xl">
+                Things I&apos;ve built
+              </h1>
+            </div>
 
-      <div className="grid gap-4 sm:grid-cols-2">
-        {projects.map((project, i) => (
-          <Reveal
-            key={project.slug}
-            delay={(Math.min(i + 1, 5) as 1 | 2 | 3 | 4 | 5)}
-          >
-            <ProjectCard project={project} />
-          </Reveal>
-        ))}
-      </div>
-    </section>
+            <span className="shrink-0 rounded-full border border-signal/30 bg-signal/5 px-3 py-1 font-mono text-xs text-signal">
+              {projects.length} Projects
+            </span>
+          </div>
+        </Reveal>
+
+        <div className="grid gap-6 sm:grid-cols-2">
+          {projects.map((project, i) => (
+            <Reveal
+              key={project.slug}
+              delay={Math.min(i + 1, 5) as 1 | 2 | 3 | 4 | 5}
+            >
+              <ProjectCard project={project} />
+            </Reveal>
+          ))}
+        </div>
+      </section>
+    </div>
   );
 }

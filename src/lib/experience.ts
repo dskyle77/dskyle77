@@ -31,7 +31,7 @@ export const experience: ExperienceEntry[] = [
   },
   {
     id: "topibro",
-    role: "Junior Full-Stack Developer",
+    role: "Junior Web Developer",
     org: "Topibro Technologies",
     period: "2026 — Present",
     type: "work",

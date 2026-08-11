@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
-import { JetBrains_Mono, Inter, Press_Start_2P } from "next/font/google";
+import { JetBrains_Mono, Press_Start_2P, Geist } from "next/font/google";
 import "./globals.css";
 import { buildMetadata } from "@/lib/metadata";
 import { site } from "@/lib/site";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
+import { cn } from "@/lib/utils";
 
 const mono = JetBrains_Mono({
   variable: "--font-mono",
@@ -12,11 +13,7 @@ const mono = JetBrains_Mono({
   weight: ["400", "500", "700", "800"],
 });
 
-const sans = Inter({
-  variable: "--font-sans",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-});
+const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
 const display = Press_Start_2P({
   variable: "--font-display",
@@ -42,6 +39,8 @@ export default function RootLayout({
     alternateName: site.handle,
     jobTitle: site.role,
     url: site.links.portfolio,
+    image: `${site.links.portfolio}/images/me.png`,
+    description: `${site.name} — ${site.role} based in ${site.location}`,
     email: site.email,
     sameAs: [
       site.links.github,
@@ -71,7 +70,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${mono.variable} ${sans.variable} ${display.variable} h-full scroll-smooth`}
+      className={cn("h-full", "scroll-smooth", mono.variable, display.variable, "font-sans", geist.variable)}
     >
       <head>
         <meta name="google-site-verification" content="VSfQNrDzaWkb5dBYeBDV5NBTXhBMJGBGzZR4V1jSt5o" />
@@ -80,7 +79,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className="min-h-full flex flex-col bg-ink text-paper font-sans antialiased selection:bg-signal selection:text-ink">
+      <body className="min-h-full flex flex-col bg-ink text-paper font-sans antialiased selection:bg-signal selection:text-ink overflow-x-hidden">
         <Nav />
         <main className="flex-1 relative">{children}</main>
         <Footer />

@@ -1,8 +1,10 @@
 /* eslint-disable @next/next/no-html-link-for-pages */
 import { site } from "@/lib/site";
-import BuildLog from "./BuildLog";
-import StatCard from "./StatCard";
-import Reveal from "./Reveal";
+import BuildLog from "./shared/BuildLog";
+import StatCard from "./shared/StatCard";
+import Reveal from "./shared/Reveal";
+import BackgroundGrid from "./shared/BackgroundGrid";
+import Aurora from "./shared/Aurora";
 
 const stack = [
   "NEXT.JS",
@@ -16,23 +18,15 @@ const stack = [
 export default function Hero() {
   return (
     <section className="relative isolate min-h-[calc(100vh-52px)] overflow-hidden">
-      {/* Background grid */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 -z-10 opacity-[0.035]"
-        style={{
-          backgroundImage: `
-            linear-gradient(to right, currentColor 1px, transparent 1px),
-            linear-gradient(to bottom, currentColor 1px, transparent 1px)
-          `,
-          backgroundSize: "48px 48px",
-        }}
+      <BackgroundGrid />
+      <Aurora
+        intensity={0.35}
+        className="-right-40 -top-32 h-128 w-lg animate-hero-aurora"
       />
 
-      {/* Ambient glow */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute left-[15%] top-[15%] -z-10 h-72 w-72 rounded-full bg-signal/10 blur-[120px]"
+      <Aurora
+        intensity={0.18}
+        className="-left-40 top-20 h-96 w-96 animate-hero-aurora-reverse"
       />
 
       <div className="mx-auto max-w-6xl px-6 pt-20 pb-10 sm:pt-28 sm:pb-12">
