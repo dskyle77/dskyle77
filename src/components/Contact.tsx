@@ -1,6 +1,5 @@
 import { site } from "@/lib/site";
 import Reveal from "./shared/Reveal";
-import BackgroundGrid from "./shared/BackgroundGrid";
 
 const channels = [
   {
@@ -28,11 +27,9 @@ const channels = [
 
 export default function Contact() {
   return (
-    <div className="relative">
-      <BackgroundGrid size={{ x: "32px", y: "32px" }} />
-      <section className="mx-auto max-w-5xl overflow-hidden px-6 py-24 sm:py-32">
-        {/* Content */}
-        <div className="relative">
+    <section className="mx-auto max-w-5xl overflow-hidden px-6 py-24 sm:py-32">
+      {/* Content */}
+      <div className="relative">
         <Reveal>
           <div className="max-w-2xl">
             <div className="mb-5 flex items-center gap-3">
@@ -129,7 +126,6 @@ export default function Contact() {
           </div>
         </Reveal>
       </div>
-      </section>
-    </div>
+    </section>
   );
 }

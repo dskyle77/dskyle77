@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, type Variants } from "motion/react";
+import { useEffect, useRef } from "react";
 
 type RevealDirection = "up" | "down" | "left" | "right" | "scale" | "fade";
 
@@ -13,65 +13,66 @@ type RevealProps = {
   className?: string;
 };
 
-const directions: Record<
-  RevealDirection,
-  { x?: number; y?: number; scale?: number }
-> = {
-  up: { y: 30 },
-  down: { y: -30 },
-  left: { x: -40 },
-  right: { x: 40 },
-  scale: { scale: 0.92 },
-  fade: {},
-};
-
+/**
+ * Lightweight reveal using CSS transitions + IntersectionObserver.
+ * Avoids motion/react (framer) to keep the client bundle small and
+ * paints cheap (transform + opacity only).
+ */
 export default function Reveal({
   children,
   direction = "up",
   delay = 0,
-  duration = 0.4,
-  distance = 24,
-  className,
+  className = "",
 }: RevealProps) {
-  const offset = directions[direction];
+  const ref = useRef<HTMLDivElement>(null);
 
-  // If delay is passed as step index (>= 1), scale to fast stagger seconds (e.g., 1 -> 0.05s, 2 -> 0.10s)
-  const computedDelay = delay >= 1 ? delay * 0.05 : delay;
+  // Map delay index (1,2,3...) to the existing CSS delay classes
+  const delayClass =
+    delay >= 1 && delay <= 5 ? `reveal-delay-${Math.min(5, Math.round(delay))}` : "";
 
-  const initial = {
-    opacity: 0,
-    ...(offset.x !== undefined ? { x: (offset.x / 40) * distance } : {}),
-    ...(offset.y !== undefined ? { y: (offset.y / 30) * distance } : {}),
-    ...(offset.scale !== undefined ? { scale: offset.scale } : {}),
-  };
+  // Direction-specific initial transforms via data attribute (kept simple;
+  // primary motion is still the shared .reveal translateY for consistency)
+  const dirClass =
+    direction === "left"
+      ? "reveal-left"
+      : direction === "right"
+        ? "reveal-right"
+        : direction === "scale"
+          ? "reveal-scale"
+          : direction === "fade"
+            ? "reveal-fade"
+            : "";
 
-  const variants: Variants = {
-    hidden: initial,
-    visible: {
-      opacity: 1,
-      x: 0,
-      y: 0,
-      scale: 1,
-      transition: {
-        duration,
-        delay: computedDelay,
-        ease: [0.22, 1, 0.36, 1],
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    // Already visible (e.g. SSR + reduced motion handled by CSS)
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      el.classList.add("is-visible");
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          el.classList.add("is-visible");
+          observer.unobserve(el);
+        }
       },
-    },
-  };
+      { threshold: 0.08, rootMargin: "0px 0px -40px 0px" }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   return (
-    <motion.div
-      className={className}
-      variants={variants}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{
-        once: true,
-        amount: 0.1,
-      }}
+    <div
+      ref={ref}
+      className={`reveal ${delayClass} ${dirClass} ${className}`.trim()}
     >
       {children}
-    </motion.div>
+    </div>
   );
 }

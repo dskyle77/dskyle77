@@ -10,7 +10,7 @@ export default function Home() {
     <>
       <Hero />
       <div className="relative overflow-hidden">
-        <BackgroundGrid size={{ x: "25px", y: "25px" }} />
+        <BackgroundGrid size={{ x: "32px", y: "32px" }} />
         <Skills />
         <Projects />
         <Experience compact />
