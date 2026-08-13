@@ -1,10 +1,10 @@
 export const site = {
   name: "David Onyema",
   handle: "dskyle77",
-  role: "Junior Full-Stack Developer",
+  role: "Founder of SiteNix · Full-Stack Developer",
 
   tagline:
-    "I build and ship web products end-to-end — from responsive interfaces to APIs, databases, and deployment.",
+    "Founder & sole developer of SiteNix. I build and ship web products end-to-end — from responsive interfaces to APIs, databases, and deployment.",
 
   location: "Lagos, Nigeria",
 

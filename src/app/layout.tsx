@@ -28,9 +28,9 @@ const display = Press_Start_2P({
 });
 
 export const metadata: Metadata = buildMetadata({
-  title: `${site.name} — ${site.role}`,
+  title: `${site.name} — Founder of SiteNix · Full-Stack Developer`,
   description: site.tagline,
-  image: "/images/og.png"
+  image: "/images/og.png",
 });
 
 export default function RootLayout({
@@ -46,7 +46,7 @@ export default function RootLayout({
     jobTitle: site.role,
     url: site.links.portfolio,
     image: `${site.links.portfolio}/images/me.png`,
-    description: `${site.name} — ${site.role} based in ${site.location}`,
+    description: `${site.name} — Founder & sole developer of SiteNix. ${site.role} based in ${site.location}`,
     email: site.email,
     sameAs: [
       site.links.github,
@@ -70,7 +70,13 @@ export default function RootLayout({
       "JavaScript",
       "Web Development",
       "Game Development",
+      "SiteNix",
     ],
+    founder: {
+      "@type": "Organization",
+      name: "SiteNix",
+      url: "https://sitenix.app",
+    },
   };
 
   return (
