@@ -4,25 +4,16 @@ import { withRateLimit } from "@/server/rateLimits";
 import { rateLimits } from "@/server/rateLimits/limits";
 import { getBlogBySlug } from "@/lib/blogs";
 
-type RouteContext = {
-  params: Promise<{ slug: string }>;
-};
+type Context = { params: Promise<{ slug: string }> };
 
-/**
- * GET /api/blogs/[slug]
- * Full published blog including markdown content.
- */
-export async function GET(req: Request, context: RouteContext) {
+export async function GET(req: Request, context: Context) {
   try {
     const { slug } = await context.params;
     const ip = getClientIp(req);
 
-    if (rateLimits?.blogs) {
-      const ratelimit = await withRateLimit(
-        rateLimits.blogs,
-        `${ip}:blogs:${slug}`,
-      );
-      if (!ratelimit.success) {
+    if (rateLimits.blogs) {
+      const rl = await withRateLimit(rateLimits.blogs, `${ip}:blogs:${slug}`);
+      if (!rl.success) {
         return NextResponse.json(
           { error: "Too many requests. Try again later." },
           { status: 429 },
@@ -31,15 +22,11 @@ export async function GET(req: Request, context: RouteContext) {
     }
 
     const blog = await getBlogBySlug(slug);
-
     if (!blog) {
       return NextResponse.json({ error: "Blog not found." }, { status: 404 });
     }
 
-    return NextResponse.json({
-      success: true,
-      data: blog,
-    });
+    return NextResponse.json({ success: true, data: blog });
   } catch (error) {
     console.error("GET /api/blogs/[slug] failed:", error);
     return NextResponse.json(

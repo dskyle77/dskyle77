@@ -1,11 +1,17 @@
-// server/firebase-admin.ts
+import { cert, getApp, getApps, initializeApp, type App } from "firebase-admin/app";
+import { getAuth, type Auth } from "firebase-admin/auth";
+import { getFirestore, type Firestore } from "firebase-admin/firestore";
 
-import { cert, getApp, getApps, initializeApp } from "firebase-admin/app";
-import { getAuth } from "firebase-admin/auth";
-import { getFirestore } from "firebase-admin/firestore";
+let app: App | undefined;
+let db: Firestore | undefined;
+let auth: Auth | undefined;
 
-function getAdminApp() {
-  if (getApps().length) return getApp();
+function initApp(): App {
+  if (app) return app;
+  if (getApps().length) {
+    app = getApp();
+    return app;
+  }
 
   const projectId = process.env.FIREBASE_PROJECT_ID;
   const clientEmail = process.env.FIREBASE_CLIENT_EMAIL;
@@ -13,14 +19,25 @@ function getAdminApp() {
 
   if (!projectId || !clientEmail || !privateKey) {
     throw new Error(
-      "Missing Firebase Admin env vars: FIREBASE_PROJECT_ID, FIREBASE_CLIENT_EMAIL, FIREBASE_PRIVATE_KEY",
+      "Missing Firebase Admin credentials. Set FIREBASE_PROJECT_ID, FIREBASE_CLIENT_EMAIL, and FIREBASE_PRIVATE_KEY.",
     );
   }
 
-  return initializeApp({
+  app = initializeApp({
     credential: cert({ projectId, clientEmail, privateKey }),
   });
+
+  return app;
 }
 
-export const db = getFirestore(getAdminApp());
-export const adminAuth = getAuth(getAdminApp());
+/** Server-only Firestore instance (lazy). */
+export function getDb(): Firestore {
+  if (!db) db = getFirestore(initApp());
+  return db;
+}
+
+/** Server-only Auth instance (lazy). */
+export function getAdminAuth(): Auth {
+  if (!auth) auth = getAuth(initApp());
+  return auth;
+}

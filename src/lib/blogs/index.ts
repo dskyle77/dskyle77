@@ -1,4 +1,4 @@
-import { db } from "@/server/firebase-admin";
+import { getDb } from "@/server/firebase-admin";
 import type { Blog, BlogStatus } from "@/types/blogs";
 import { slugify } from "./slug-client";
 
@@ -7,7 +7,6 @@ export { slugify } from "./slug-client";
 const COLLECTION = "published_blogs";
 const WORDS_PER_MINUTE = 200;
 
-/** Convert Firestore Timestamp | number | string → ms epoch. */
 function toMillis(value: unknown): number {
   if (value == null) return Date.now();
   if (typeof value === "number" && Number.isFinite(value)) return value;
@@ -55,11 +54,10 @@ export function estimateWordCount(markdown: string): number {
 }
 
 function isPublishedStatus(status: unknown): boolean {
-  if (status == null || status === "") return true; // legacy docs
+  if (status == null || status === "") return true;
   return status === "published";
 }
 
-/** Normalize a raw Firestore document into a Blog. */
 export function normalizeBlog(
   id: string,
   raw: Record<string, unknown>,
@@ -110,9 +108,7 @@ export function normalizeBlog(
     id,
     title: typeof raw.title === "string" ? raw.title : "Untitled",
     slug:
-      typeof raw.slug === "string" && raw.slug.trim()
-        ? raw.slug.trim()
-        : id,
+      typeof raw.slug === "string" && raw.slug.trim() ? raw.slug.trim() : id,
     description:
       typeof raw.description === "string"
         ? raw.description
@@ -139,21 +135,18 @@ export function normalizeBlog(
   return blog;
 }
 
-/**
- * Public: published blogs only, ordered by publishedAt desc.
- * Content omitted by default.
- */
+/** Public list — published only, newest first. */
 export async function getPublishedBlogs(
   limit = 50,
   options: { includeContent?: boolean } = {},
 ): Promise<Blog[]> {
-  const snapshot = await db
+  const snapshot = await getDb()
     .collection(COLLECTION)
     .orderBy("publishedAt", "desc")
     .limit(Math.min(limit * 2, 100))
     .get();
 
-  const blogs = snapshot.docs
+  return snapshot.docs
     .map((doc) =>
       normalizeBlog(doc.id, doc.data() as Record<string, unknown>, {
         includeContent: options.includeContent ?? false,
@@ -161,17 +154,13 @@ export async function getPublishedBlogs(
     )
     .filter((b) => isPublishedStatus(b.status))
     .slice(0, limit);
-
-  return blogs;
 }
 
-/**
- * Public: single published blog by slug (or doc id).
- */
+/** Public detail by slug (falls back to document id). */
 export async function getBlogBySlug(slug: string): Promise<Blog | null> {
   if (!slug?.trim()) return null;
 
-  const bySlug = await db
+  const bySlug = await getDb()
     .collection(COLLECTION)
     .where("slug", "==", slug)
     .limit(1)
@@ -186,11 +175,13 @@ export async function getBlogBySlug(slug: string): Promise<Blog | null> {
     return blog;
   }
 
-  const byId = await db.collection(COLLECTION).doc(slug).get();
+  const byId = await getDb().collection(COLLECTION).doc(slug).get();
   if (byId.exists) {
-    const blog = normalizeBlog(byId.id, byId.data() as Record<string, unknown>, {
-      includeContent: true,
-    });
+    const blog = normalizeBlog(
+      byId.id,
+      byId.data() as Record<string, unknown>,
+      { includeContent: true },
+    );
     if (!isPublishedStatus(blog.status)) return null;
     return blog;
   }
@@ -203,12 +194,10 @@ export async function getPublishedSlugs(): Promise<string[]> {
   return blogs.map((b) => b.slug).filter(Boolean);
 }
 
-// ─── Admin operations ───────────────────────────────────────────────────────
+// ─── Admin ──────────────────────────────────────────────────────────────────
 
-/** All blogs (draft + published + archived) for admin. */
 export async function getAllBlogsAdmin(limit = 100): Promise<Blog[]> {
-  // Unordered fetch + in-memory sort so legacy docs without updatedAt still appear
-  const snapshot = await db.collection(COLLECTION).limit(limit).get();
+  const snapshot = await getDb().collection(COLLECTION).limit(limit).get();
   return snapshot.docs
     .map((doc) =>
       normalizeBlog(doc.id, doc.data() as Record<string, unknown>, {
@@ -220,19 +209,22 @@ export async function getAllBlogsAdmin(limit = 100): Promise<Blog[]> {
 
 export async function getBlogByIdAdmin(id: string): Promise<Blog | null> {
   if (!id?.trim()) return null;
-  const doc = await db.collection(COLLECTION).doc(id).get();
+  const doc = await getDb().collection(COLLECTION).doc(id).get();
   if (!doc.exists) return null;
   return normalizeBlog(doc.id, doc.data() as Record<string, unknown>, {
     includeContent: true,
   });
 }
 
-async function ensureUniqueSlug(base: string, excludeId?: string): Promise<string> {
+async function ensureUniqueSlug(
+  base: string,
+  excludeId?: string,
+): Promise<string> {
   let slug = slugify(base) || `post-${Date.now()}`;
   let attempt = 0;
 
   while (attempt < 20) {
-    const snap = await db
+    const snap = await getDb()
       .collection(COLLECTION)
       .where("slug", "==", slug)
       .limit(1)
@@ -274,9 +266,6 @@ function buildDocPayload(
   if (willPublish && !wasPublished) {
     publishedAt = now;
   }
-  if (!willPublish && !wasPublished) {
-    publishedAt = existing?.publishedAt ?? now;
-  }
 
   const cover =
     input.coverImage === null
@@ -295,9 +284,7 @@ function buildDocPayload(
       ? input.tags.map((t) => t.trim()).filter(Boolean)
       : (existing?.tags ?? []),
     status,
-    isFeatured: Boolean(
-      input.isFeatured ?? existing?.isFeatured ?? false,
-    ),
+    isFeatured: Boolean(input.isFeatured ?? existing?.isFeatured ?? false),
     wordCount: content ? estimateWordCount(content) : 0,
     readingTimeMinutes: content ? estimateReadingTime(content) : 1,
     publishedAt,
@@ -317,23 +304,19 @@ function buildDocPayload(
 
 export async function createBlog(input: BlogWriteInput): Promise<Blog> {
   const title = input.title?.trim();
-  if (!title) {
-    throw new Error("Title is required.");
-  }
+  if (!title) throw new Error("Title is required.");
 
   const slug = await ensureUniqueSlug(input.slug?.trim() || title);
   const payload = buildDocPayload({ ...input, title });
   payload.slug = slug;
 
-  // Prefer slug as document id when available and unused
   const preferredId = slug;
-  const existingId = await db.collection(COLLECTION).doc(preferredId).get();
+  const existingId = await getDb().collection(COLLECTION).doc(preferredId).get();
   const ref = existingId.exists
-    ? db.collection(COLLECTION).doc()
-    : db.collection(COLLECTION).doc(preferredId);
+    ? getDb().collection(COLLECTION).doc()
+    : getDb().collection(COLLECTION).doc(preferredId);
 
   await ref.set(payload);
-
   return normalizeBlog(ref.id, payload, { includeContent: true });
 }
 
@@ -342,14 +325,10 @@ export async function updateBlog(
   input: BlogWriteInput,
 ): Promise<Blog> {
   const existing = await getBlogByIdAdmin(id);
-  if (!existing) {
-    throw new Error("Blog not found.");
-  }
+  if (!existing) throw new Error("Blog not found.");
 
   const title = (input.title ?? existing.title).trim();
-  if (!title) {
-    throw new Error("Title is required.");
-  }
+  if (!title) throw new Error("Title is required.");
 
   let slug = existing.slug;
   if (input.slug !== undefined && input.slug.trim()) {
@@ -359,7 +338,7 @@ export async function updateBlog(
   const payload = buildDocPayload({ ...input, title }, existing);
   payload.slug = slug;
 
-  await db.collection(COLLECTION).doc(id).set(payload, { merge: true });
+  await getDb().collection(COLLECTION).doc(id).set(payload, { merge: true });
 
   const updated = await getBlogByIdAdmin(id);
   if (!updated) throw new Error("Failed to load updated blog.");
@@ -367,10 +346,8 @@ export async function updateBlog(
 }
 
 export async function deleteBlog(id: string): Promise<void> {
-  const ref = db.collection(COLLECTION).doc(id);
+  const ref = getDb().collection(COLLECTION).doc(id);
   const doc = await ref.get();
-  if (!doc.exists) {
-    throw new Error("Blog not found.");
-  }
+  if (!doc.exists) throw new Error("Blog not found.");
   await ref.delete();
 }

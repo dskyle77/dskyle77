@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import type { DecodedIdToken } from "firebase-admin/auth";
-import { adminAuth } from "@/server/firebase-admin";
+import { getAdminAuth } from "@/server/firebase-admin";
 import { env } from "@/config/env";
 
 export class AuthError extends Error {
@@ -14,28 +14,18 @@ export class AuthError extends Error {
 }
 
 function isAdminToken(decoded: DecodedIdToken): boolean {
-  // Custom claim set in Firebase Console / Admin SDK
-  if (decoded.admin === true || decoded.role === "admin") {
-    return true;
-  }
+  if (decoded.admin === true || decoded.role === "admin") return true;
 
   const email = decoded.email?.toLowerCase();
   if (!email) return false;
 
-  // Allowlisted emails from ADMIN_EMAILS env
-  if (env.adminEmails.length > 0 && env.adminEmails.includes(email)) {
-    return true;
-  }
-
-  return false;
+  return env.adminEmails.length > 0 && env.adminEmails.includes(email);
 }
 
-/**
- * Verify Bearer ID token and ensure the user is an admin.
- * Throws AuthError on failure.
- */
+/** Verify Bearer ID token and ensure the user is an admin. */
 export async function requireAdmin(req: Request): Promise<DecodedIdToken> {
-  const header = req.headers.get("authorization") || req.headers.get("Authorization");
+  const header =
+    req.headers.get("authorization") || req.headers.get("Authorization");
   if (!header?.startsWith("Bearer ")) {
     throw new AuthError("Missing or invalid Authorization header.", 401);
   }
@@ -47,7 +37,7 @@ export async function requireAdmin(req: Request): Promise<DecodedIdToken> {
 
   let decoded: DecodedIdToken;
   try {
-    decoded = await adminAuth.verifyIdToken(token, true);
+    decoded = await getAdminAuth().verifyIdToken(token, true);
   } catch {
     throw new AuthError("Invalid or expired auth token.", 401);
   }
