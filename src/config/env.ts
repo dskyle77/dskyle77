@@ -31,6 +31,16 @@ export const env = {
     privateKey: getEnv("FIREBASE_PRIVATE_KEY").replace(/\\n/g, "\n"),
   },
 
+  "firebase-client": {
+    apiKey: getEnv("NEXT_PUBLIC_FIREBASE_API_KEY"),
+    authDomain: getEnv("NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN"),
+    projectId: getEnv("NEXT_PUBLIC_FIREBASE_PROJECT_ID"),
+    storageBucket: getEnv("NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET"),
+    messagingSenderId: getEnv("NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID"),
+    appId: getEnv("NEXT_PUBLIC_FIREBASE_APP_ID"),
+    measurementId: getOptionalEnv("NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID"),
+  },
+
   redis: {
     url: getEnv("UPSTASH_REDIS_REST_URL"),
     token: getEnv("UPSTASH_REDIS_REST_TOKEN"),
