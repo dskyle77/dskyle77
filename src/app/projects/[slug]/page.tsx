@@ -16,7 +16,13 @@ export async function generateMetadata({
   const { slug } = await params;
   const project = getProjectBySlug(slug);
 
-  if (!project) return {};
+  if (!project) {
+    return buildMetadata({
+      title: "Project not found",
+      description: "This project isn't in the portfolio.",
+      path: `/projects/${slug}`,
+    });
+  }
 
   return buildMetadata({
     title: project.title,

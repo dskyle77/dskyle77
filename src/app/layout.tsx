@@ -3,8 +3,7 @@ import { JetBrains_Mono, Press_Start_2P, Geist } from "next/font/google";
 import "./globals.css";
 import { buildMetadata } from "@/lib/metadata";
 import { site } from "@/lib/site";
-import Nav from "@/components/Nav";
-import Footer from "@/components/Footer";
+import SiteChrome from "@/components/SiteChrome";
 import { cn } from "@/lib/utils";
 
 const mono = JetBrains_Mono({
@@ -82,19 +81,27 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={cn("h-full", "scroll-smooth", mono.variable, display.variable, "font-sans", geist.variable)}
+      className={cn(
+        "h-full",
+        "scroll-smooth",
+        mono.variable,
+        display.variable,
+        "font-sans",
+        geist.variable,
+      )}
     >
       <head>
-        <meta name="google-site-verification" content="VSfQNrDzaWkb5dBYeBDV5NBTXhBMJGBGzZR4V1jSt5o" />
+        <meta
+          name="google-site-verification"
+          content="VSfQNrDzaWkb5dBYeBDV5NBTXhBMJGBGzZR4V1jSt5o"
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
       <body className="min-h-full flex flex-col bg-ink text-paper font-sans antialiased selection:bg-signal selection:text-ink overflow-x-hidden">
-        <Nav />
-        <main className="flex-1 relative">{children}</main>
-        <Footer />
+        <SiteChrome>{children}</SiteChrome>
       </body>
     </html>
   );

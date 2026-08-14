@@ -16,7 +16,7 @@ export default function NotFound() {
         404
       </p>
 
-      <h1 className="font-mono font-bold text-3xl sm:text-4xl text-paper mb-4">
+      <h1 className="font-display text-3xl sm:text-4xl text-paper mb-4">
         Page not found
       </h1>
 
@@ -26,13 +26,19 @@ export default function NotFound() {
       </p>
 
       <div className="flex flex-wrap items-center justify-center gap-3">
-        <Link href="/" className="btn-primary">
+        <Link
+          href="/"
+          className="btn-primary px-4 py-2 text-sm font-medium text-ink"
+        >
           Back to home
         </Link>
-        <Link href="/projects" className="btn-secondary">
-          See projects
+        <Link href="/projects" className="btn-secondary px-4 py-2 text-sm">
+          Projects
         </Link>
-        <Link href="/resume" className="btn-secondary">
+        <Link href="/blogs" className="btn-secondary px-4 py-2 text-sm">
+          Blogs
+        </Link>
+        <Link href="/resume" className="btn-secondary px-4 py-2 text-sm">
           Resume
         </Link>
       </div>
