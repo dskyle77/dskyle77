@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import type { DecodedIdToken } from "firebase-admin/auth";
-import { getAdminAuth } from "@/server/firebase-admin";
+import { getAdminAuth } from "@/server/firebase-auth";
 import { env } from "@/config/env";
 
 export class AuthError extends Error {

@@ -1,17 +1,14 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  // Keep firebase-admin outside the Turbopack/webpack bundle so its
+  // CJS deps (jwks-rsa → jose) resolve correctly on Vercel.
+  serverExternalPackages: ["firebase-admin"],
+
   images: {
     remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "**",
-      },
-      {
-        protocol: "http",
-        hostname: "**",
-      },
+      { protocol: "https", hostname: "**" },
+      { protocol: "http", hostname: "**" },
     ],
   },
 };

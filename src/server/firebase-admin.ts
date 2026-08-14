@@ -1,12 +1,10 @@
 import { cert, getApp, getApps, initializeApp, type App } from "firebase-admin/app";
-import { getAuth, type Auth } from "firebase-admin/auth";
 import { getFirestore, type Firestore } from "firebase-admin/firestore";
 
 let app: App | undefined;
 let db: Firestore | undefined;
-let auth: Auth | undefined;
 
-function initApp(): App {
+export function getAdminApp(): App {
   if (app) return app;
   if (getApps().length) {
     app = getApp();
@@ -30,14 +28,8 @@ function initApp(): App {
   return app;
 }
 
-/** Server-only Firestore instance (lazy). */
+/** Server-only Firestore (lazy). Safe for public routes — does not load Auth. */
 export function getDb(): Firestore {
-  if (!db) db = getFirestore(initApp());
+  if (!db) db = getFirestore(getAdminApp());
   return db;
-}
-
-/** Server-only Auth instance (lazy). */
-export function getAdminAuth(): Auth {
-  if (!auth) auth = getAuth(initApp());
-  return auth;
 }
