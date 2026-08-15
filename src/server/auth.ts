@@ -1,6 +1,8 @@
+import "server-only";
+
 import { NextResponse } from "next/server";
 import type { DecodedIdToken } from "firebase-admin/auth";
-import { getAdminAuth } from "@/server/firebase-auth";
+import { adminAuth } from "@/server/firebase-admin";
 import { env } from "@/config/env";
 
 export class AuthError extends Error {
@@ -14,7 +16,6 @@ export class AuthError extends Error {
 }
 
 function isAdminToken(decoded: DecodedIdToken): boolean {
-  // Prefer custom claims when present.
   if (decoded.admin === true || decoded.role === "admin") return true;
 
   const email = decoded.email?.toLowerCase();
@@ -46,11 +47,21 @@ export async function requireAdmin(req: Request): Promise<DecodedIdToken> {
 
   let decoded: DecodedIdToken;
   try {
-    // checkRevoked = true rejects tokens after password change / disable.
-    decoded = await getAdminAuth().verifyIdToken(token, true);
+    decoded = await adminAuth.verifyIdToken(token);
   } catch (err) {
-    // Log server-side only — never leak verify details to the client.
-    console.error("[auth] verifyIdToken failed:", err);
+    const msg = err instanceof Error ? err.message : String(err);
+    console.error("[auth] verifyIdToken failed:", msg);
+
+    if (
+      /private key|PEM|credential|DECODER|1E08010C|invalid-credential/i.test(
+        msg,
+      )
+    ) {
+      throw new Error(
+        `Firebase Admin credential error: ${msg}. Check FIREBASE_PRIVATE_KEY on Vercel.`,
+      );
+    }
+
     throw new AuthError("Invalid or expired auth token.", 401);
   }
 
@@ -66,26 +77,21 @@ export function authErrorResponse(error: unknown) {
     return NextResponse.json({ error: error.message }, { status: error.status });
   }
 
-  // Common misconfig surface on Vercel: missing FIREBASE_* or bad private key.
   const message = error instanceof Error ? error.message : String(error);
-  if (
-    message.includes("Missing Firebase Admin credentials") ||
-    message.includes("Failed to parse private key") ||
-    message.includes("error:1E08010C") // OpenSSL PEM parse
-  ) {
-    console.error("[auth] Firebase Admin misconfiguration:", message);
-    return NextResponse.json(
-      {
-        error:
-          "Server auth is misconfigured. Check FIREBASE_PROJECT_ID, FIREBASE_CLIENT_EMAIL, and FIREBASE_PRIVATE_KEY on Vercel.",
-      },
-      { status: 500 },
-    );
-  }
+  console.error("[auth] unexpected error:", message);
 
-  console.error("[auth] unexpected error:", error);
+  const isConfig =
+    /Missing Firebase|credential|private key|PEM|SERVICE_ACCOUNT|FIREBASE_/i.test(
+      message,
+    );
+
   return NextResponse.json(
-    { error: "Something went wrong. Please try again later." },
+    {
+      error: isConfig
+        ? message
+        : "Something went wrong. Please try again later.",
+      ...(isConfig ? { code: "FIREBASE_ADMIN_MISCONFIG" } : {}),
+    },
     { status: 500 },
   );
 }

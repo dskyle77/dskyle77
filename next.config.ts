@@ -1,8 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Keep firebase-admin outside the Turbopack/webpack bundle so its
-  // CJS deps (jwks-rsa → jose) resolve correctly on Vercel.
+  // Same as sitenix: keep firebase-admin external so CJS deps resolve at runtime.
   serverExternalPackages: ["firebase-admin"],
 
   images: {

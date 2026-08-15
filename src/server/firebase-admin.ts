@@ -1,48 +1,33 @@
-import {
-  cert,
-  getApp,
-  getApps,
-  initializeApp,
-  type App,
-} from "firebase-admin/app";
-import { getFirestore, type Firestore } from "firebase-admin/firestore";
+import "server-only";
 
-let app: App | undefined;
-let db: Firestore | undefined;
+import admin from "firebase-admin";
 
 /**
- * Normalize the service-account private key for Vercel / most hosts.
- * Env UIs often store the PEM with literal `\n` sequences.
+ * Same pattern as the working sitenix app:
+ * default `firebase-admin` import + singleton init.
+ * Modular `firebase-admin/auth` subpath imports break under Turbopack
+ * externals on Vercel (jwks-rsa → require jose → ERR_REQUIRE_ESM).
  */
+
 function normalizePrivateKey(raw: string): string {
   let key = raw.trim();
-
-  // Strip wrapping quotes if the whole value was pasted with them.
-  if (
+  while (
     (key.startsWith('"') && key.endsWith('"')) ||
     (key.startsWith("'") && key.endsWith("'"))
   ) {
-    key = key.slice(1, -1);
+    key = key.slice(1, -1).trim();
   }
-
-  // Turn escaped newlines into real ones.
-  key = key.replace(/\\n/g, "\n");
-
-  return key;
+  return key.replace(/\\n/g, "\n");
 }
 
-function readAdminCredentials() {
+function readCredential() {
   const projectId = process.env.FIREBASE_PROJECT_ID?.trim();
   const clientEmail = process.env.FIREBASE_CLIENT_EMAIL?.trim();
   const privateKeyRaw = process.env.FIREBASE_PRIVATE_KEY;
 
   if (!projectId || !clientEmail || !privateKeyRaw) {
     throw new Error(
-      [
-        "Missing Firebase Admin credentials.",
-        "Set FIREBASE_PROJECT_ID, FIREBASE_CLIENT_EMAIL, and FIREBASE_PRIVATE_KEY",
-        "in the Vercel project environment (Production + Preview).",
-      ].join(" "),
+      "Missing Firebase Admin credentials. Set FIREBASE_PROJECT_ID, FIREBASE_CLIENT_EMAIL, and FIREBASE_PRIVATE_KEY.",
     );
   }
 
@@ -53,28 +38,16 @@ function readAdminCredentials() {
   };
 }
 
-/** Lazy Firebase Admin app. Safe to call from any server route. */
-export function getAdminApp(): App {
-  if (app) return app;
-  if (getApps().length > 0) {
-    app = getApp();
-    return app;
-  }
-
-  const { projectId, clientEmail, privateKey } = readAdminCredentials();
-
-  app = initializeApp({
-    credential: cert({ projectId, clientEmail, privateKey }),
+if (!admin.apps.length) {
+  admin.initializeApp({
+    credential: admin.credential.cert(readCredential()),
   });
-
-  return app;
 }
 
-/**
- * Server-only Firestore (lazy).
- * Public routes can import this — it does not load Auth / jose / jwks-rsa.
- */
-export function getDb(): Firestore {
-  if (!db) db = getFirestore(getAdminApp());
-  return db;
+export const adminAuth = admin.auth();
+export const adminDb = admin.firestore();
+
+/** Compat alias used by lib/blogs. */
+export function getDb() {
+  return adminDb;
 }
