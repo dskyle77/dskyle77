@@ -15,149 +15,161 @@ import {
   signOut as firebaseSignOut,
   type User,
 } from "firebase/auth";
-import { auth } from "@/lib/firebase";
+import { getClientAuth } from "@/lib/firebase/client";
 
-type AdminUser = {
-  uid: string;
-  email: string | null;
-  name: string | null;
-};
-
-type AdminAuthState = {
+type AdminAuthContextValue = {
   user: User | null;
-  admin: AdminUser | null;
   loading: boolean;
   error: string | null;
+  isAdmin: boolean;
   signIn: (email: string, password: string) => Promise<void>;
   signOut: () => Promise<void>;
-  getIdToken: () => Promise<string | null>;
+  getIdToken: (forceRefresh?: boolean) => Promise<string | null>;
 };
 
-const AdminAuthContext = createContext<AdminAuthState | null>(null);
+const AdminAuthContext = createContext<AdminAuthContextValue | null>(null);
 
-async function verifyAdmin(user: User): Promise<AdminUser> {
-  // Force refresh so we don't send a stale token after deploy / claim changes.
-  const token = await user.getIdToken(true);
-  const res = await fetch("/api/admin/me", {
-    headers: { Authorization: `Bearer ${token}` },
-  });
+function isAllowedAdmin(user: User | null): boolean {
+  if (!user?.email) return false;
+  // Client-side check uses the same allow-list (from NEXT_PUBLIC_ADMIN_EMAIL
+  // or a baked list). Server still enforces via ADMIN_EMAIL.
+  const publicList = (
+    process.env.NEXT_PUBLIC_ADMIN_EMAIL ||
+    process.env.NEXT_PUBLIC_ADMIN_EMAILS ||
+    ""
+  )
+    .split(",")
+    .map((e) => e.trim().toLowerCase())
+    .filter(Boolean);
 
-  const body = (await res.json().catch(() => ({}))) as {
-    error?: string;
-    data?: { uid: string; email: string | null; name: string | null };
-  };
-
-  if (!res.ok) {
-    throw new Error(
-      body.error || "You are signed in but not authorized as admin.",
-    );
+  // Prefer public list when present (available in the browser).
+  if (publicList.length > 0) {
+    return publicList.includes(user.email.trim().toLowerCase());
   }
 
-  if (!body.data) {
-    throw new Error("Invalid admin profile response.");
-  }
-
-  return body.data;
-}
-
-function friendlyAuthError(err: unknown): string {
-  const message = err instanceof Error ? err.message : "Sign in failed.";
-
-  if (
-    message.includes("auth/invalid-credential") ||
-    message.includes("auth/wrong-password") ||
-    message.includes("auth/invalid-login-credentials")
-  ) {
-    return "Invalid email or password.";
-  }
-  if (message.includes("auth/user-not-found")) {
-    return "No account found for that email.";
-  }
-  if (message.includes("auth/too-many-requests")) {
-    return "Too many attempts. Try again later.";
-  }
-  if (message.includes("auth/network-request-failed")) {
-    return "Network error. Check your connection and try again.";
-  }
-
-  return message
-    .replace(/^Firebase:\s*/i, "")
-    .replace(/\s*\(.*\)$/, "")
-    .trim() || "Sign in failed.";
+  // Fallback: if only server ADMIN_EMAIL was set, we cannot read it here.
+  // Treat any signed-in user as "maybe admin" and let the API reject non-admins.
+  // For UX we still require a public admin email when possible.
+  return true;
 }
 
 export function AdminAuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
-  const [admin, setAdmin] = useState<AdminUser | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const unsub = onAuthStateChanged(auth, async (next) => {
-      setLoading(true);
-      setError(null);
-      setUser(next);
-
-      if (!next) {
-        setAdmin(null);
-        setLoading(false);
-        return;
-      }
-
-      try {
-        const profile = await verifyAdmin(next);
-        setAdmin(profile);
-      } catch (err) {
-        setAdmin(null);
-        setError(
-          err instanceof Error ? err.message : "Not authorized as admin.",
-        );
-        // Drop the Firebase session for non-admins so the login form stays usable.
-        await firebaseSignOut(auth).catch(() => undefined);
-        setUser(null);
-      } finally {
-        setLoading(false);
-      }
-    });
-
-    return () => unsub();
+    let unsub: (() => void) | undefined;
+    try {
+      const auth = getClientAuth();
+      unsub = onAuthStateChanged(
+        auth,
+        (next) => {
+          setUser(next);
+          setLoading(false);
+          setError(null);
+        },
+        (err) => {
+          console.error("Auth state error:", err);
+          setUser(null);
+          setLoading(false);
+          setError(err.message || "Auth error");
+        },
+      );
+    } catch (err) {
+      console.error("Firebase client init failed:", err);
+      setUser(null);
+      setLoading(false);
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Firebase is not configured correctly.",
+      );
+    }
+    return () => unsub?.();
   }, []);
 
   const signIn = useCallback(async (email: string, password: string) => {
     setError(null);
-    setLoading(true);
+    const trimmed = email.trim().toLowerCase();
+
+    // Fast client-side gate when public admin email is configured
+    const publicList = (
+      process.env.NEXT_PUBLIC_ADMIN_EMAIL ||
+      process.env.NEXT_PUBLIC_ADMIN_EMAILS ||
+      ""
+    )
+      .split(",")
+      .map((e) => e.trim().toLowerCase())
+      .filter(Boolean);
+
+    if (publicList.length > 0 && !publicList.includes(trimmed)) {
+      const message = "This account is not authorized for admin access.";
+      setError(message);
+      throw new Error(message);
+    }
+
     try {
-      await signInWithEmailAndPassword(auth, email.trim(), password);
-      // onAuthStateChanged → verifyAdmin
+      const auth = getClientAuth();
+      const cred = await signInWithEmailAndPassword(auth, trimmed, password);
+      if (!isAllowedAdmin(cred.user)) {
+        await firebaseSignOut(auth);
+        const message = "This account is not authorized for admin access.";
+        setError(message);
+        throw new Error(message);
+      }
     } catch (err) {
-      setLoading(false);
-      throw new Error(friendlyAuthError(err));
+      const message =
+        err instanceof Error ? err.message : "Sign in failed.";
+      // Map common Firebase codes to friendlier text
+      let friendly = message;
+      if (/auth\/invalid-credential|auth\/wrong-password|auth\/user-not-found/i.test(message)) {
+        friendly = "Invalid email or password.";
+      } else if (/auth\/too-many-requests/i.test(message)) {
+        friendly = "Too many attempts. Try again later.";
+      } else if (/auth\/invalid-email/i.test(message)) {
+        friendly = "Invalid email address.";
+      }
+      setError(friendly);
+      throw new Error(friendly);
     }
   }, []);
 
   const signOut = useCallback(async () => {
     setError(null);
-    await firebaseSignOut(auth);
-    setAdmin(null);
-    setUser(null);
+    try {
+      await firebaseSignOut(getClientAuth());
+    } catch (err) {
+      console.error("Sign out failed:", err);
+    }
   }, []);
 
-  const getIdToken = useCallback(async () => {
-    if (!auth.currentUser) return null;
-    return auth.currentUser.getIdToken(true);
-  }, []);
+  const getIdToken = useCallback(
+    async (forceRefresh = false): Promise<string | null> => {
+      if (!user) return null;
+      try {
+        return await user.getIdToken(forceRefresh);
+      } catch (err) {
+        console.error("getIdToken failed:", err);
+        return null;
+      }
+    },
+    [user],
+  );
 
-  const value = useMemo(
+  const isAdmin = useMemo(() => isAllowedAdmin(user), [user]);
+
+  const value = useMemo<AdminAuthContextValue>(
     () => ({
       user,
-      admin,
       loading,
       error,
+      isAdmin,
       signIn,
       signOut,
       getIdToken,
     }),
-    [user, admin, loading, error, signIn, signOut, getIdToken],
+    [user, loading, error, isAdmin, signIn, signOut, getIdToken],
   );
 
   return (
@@ -167,7 +179,7 @@ export function AdminAuthProvider({ children }: { children: ReactNode }) {
   );
 }
 
-export function useAdminAuth() {
+export function useAdminAuth(): AdminAuthContextValue {
   const ctx = useContext(AdminAuthContext);
   if (!ctx) {
     throw new Error("useAdminAuth must be used within AdminAuthProvider");

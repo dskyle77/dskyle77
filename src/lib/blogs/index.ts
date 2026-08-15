@@ -241,7 +241,7 @@ async function ensureUniqueSlug(
 }
 
 export type BlogWriteInput = {
-  title: string;
+  title?: string;
   slug?: string;
   description?: string;
   content?: string;
@@ -303,7 +303,7 @@ function buildDocPayload(
 }
 
 export async function createBlog(input: BlogWriteInput): Promise<Blog> {
-  const title = input.title?.trim();
+  const title = (input.title ?? "").trim();
   if (!title) throw new Error("Title is required.");
 
   const slug = await ensureUniqueSlug(input.slug?.trim() || title);

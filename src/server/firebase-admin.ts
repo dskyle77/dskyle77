@@ -1,53 +1,45 @@
-import "server-only";
+import {
+  cert,
+  getApps,
+  initializeApp,
+  type App,
+  type ServiceAccount,
+} from "firebase-admin/app";
+import { getAuth, type Auth } from "firebase-admin/auth";
+import { getFirestore, type Firestore } from "firebase-admin/firestore";
+import { env } from "@/config/env";
 
-import admin from "firebase-admin";
+let app: App | null = null;
 
-/**
- * Same pattern as the working sitenix app:
- * default `firebase-admin` import + singleton init.
- * Modular `firebase-admin/auth` subpath imports break under Turbopack
- * externals on Vercel (jwks-rsa → require jose → ERR_REQUIRE_ESM).
- */
+function getAdminApp(): App {
+  if (app) return app;
 
-function normalizePrivateKey(raw: string): string {
-  let key = raw.trim();
-  while (
-    (key.startsWith('"') && key.endsWith('"')) ||
-    (key.startsWith("'") && key.endsWith("'"))
-  ) {
-    key = key.slice(1, -1).trim();
-  }
-  return key.replace(/\\n/g, "\n");
-}
-
-function readCredential() {
-  const projectId = process.env.FIREBASE_PROJECT_ID?.trim();
-  const clientEmail = process.env.FIREBASE_CLIENT_EMAIL?.trim();
-  const privateKeyRaw = process.env.FIREBASE_PRIVATE_KEY;
-
-  if (!projectId || !clientEmail || !privateKeyRaw) {
-    throw new Error(
-      "Missing Firebase Admin credentials. Set FIREBASE_PROJECT_ID, FIREBASE_CLIENT_EMAIL, and FIREBASE_PRIVATE_KEY.",
-    );
+  const existing = getApps();
+  if (existing.length > 0) {
+    app = existing[0]!;
+    return app;
   }
 
-  return {
-    projectId,
-    clientEmail,
-    privateKey: normalizePrivateKey(privateKeyRaw),
+  const cfg = env.requireFirebaseAdmin();
+
+  const serviceAccount: ServiceAccount = {
+    projectId: cfg.projectId,
+    clientEmail: cfg.clientEmail,
+    privateKey: cfg.privateKey,
   };
-}
 
-if (!admin.apps.length) {
-  admin.initializeApp({
-    credential: admin.credential.cert(readCredential()),
+  app = initializeApp({
+    credential: cert(serviceAccount),
+    projectId: cfg.projectId,
   });
+
+  return app;
 }
 
-export const adminAuth = admin.auth();
-export const adminDb = admin.firestore();
+export function getDb(): Firestore {
+  return getFirestore(getAdminApp());
+}
 
-/** Compat alias used by lib/blogs. */
-export function getDb() {
-  return adminDb;
+export function getAdminAuth(): Auth {
+  return getAuth(getAdminApp());
 }

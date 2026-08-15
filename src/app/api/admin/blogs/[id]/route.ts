@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
-import { requireAdmin, authErrorResponse } from "@/server/auth";
 import { getClientIp } from "@/server/ip";
 import { withRateLimit } from "@/server/rateLimits";
 import { rateLimits } from "@/server/rateLimits/limits";
+import { requireAdmin } from "@/server/admin-auth";
 import {
   deleteBlog,
   getBlogByIdAdmin,
@@ -10,26 +10,18 @@ import {
   type BlogWriteInput,
 } from "@/lib/blogs";
 
-type RouteContext = {
-  params: Promise<{ id: string }>;
-};
+type Context = { params: Promise<{ id: string }> };
 
-/** GET /api/admin/blogs/[id] */
-export async function GET(req: Request, context: RouteContext) {
+export async function GET(req: Request, context: Context) {
   try {
+    const auth = await requireAdmin(req);
+    if ("error" in auth) return auth.error;
+
     const { id } = await context.params;
-    const ip = getClientIp(req);
-    if (rateLimits?.admin) {
-      const rl = await withRateLimit(rateLimits.admin, `${ip}:admin-blogs`);
-      if (!rl.success) {
-        return NextResponse.json(
-          { error: "Too many requests. Try again later." },
-          { status: 429 },
-        );
-      }
+    if (!id?.trim()) {
+      return NextResponse.json({ error: "Missing id." }, { status: 400 });
     }
 
-    await requireAdmin(req);
     const blog = await getBlogByIdAdmin(id);
     if (!blog) {
       return NextResponse.json({ error: "Blog not found." }, { status: 404 });
@@ -37,17 +29,22 @@ export async function GET(req: Request, context: RouteContext) {
 
     return NextResponse.json({ success: true, data: blog });
   } catch (error) {
-    return authErrorResponse(error);
+    console.error("GET /api/admin/blogs/[id] failed:", error);
+    return NextResponse.json(
+      { error: "Something went wrong. Please try again later." },
+      { status: 500 },
+    );
   }
 }
 
-/** PATCH /api/admin/blogs/[id] */
-export async function PATCH(req: Request, context: RouteContext) {
+export async function PATCH(req: Request, context: Context) {
   try {
-    const { id } = await context.params;
+    const auth = await requireAdmin(req);
+    if ("error" in auth) return auth.error;
+
     const ip = getClientIp(req);
-    if (rateLimits?.admin) {
-      const rl = await withRateLimit(rateLimits.admin, `${ip}:admin-blogs-write`);
+    if (rateLimits.admin) {
+      const rl = await withRateLimit(rateLimits.admin, `${ip}:admin:blogs:write`);
       if (!rl.success) {
         return NextResponse.json(
           { error: "Too many requests. Try again later." },
@@ -56,30 +53,54 @@ export async function PATCH(req: Request, context: RouteContext) {
       }
     }
 
-    await requireAdmin(req);
+    const { id } = await context.params;
+    if (!id?.trim()) {
+      return NextResponse.json({ error: "Missing id." }, { status: 400 });
+    }
 
-    const body = (await req.json()) as BlogWriteInput;
-    const blog = await updateBlog(id, body);
+    const body = (await req.json().catch(() => null)) as
+      | Partial<BlogWriteInput>
+      | null;
+    if (!body || typeof body !== "object") {
+      return NextResponse.json(
+        { error: "Invalid JSON body." },
+        { status: 400 },
+      );
+    }
+
+    const blog = await updateBlog(id, {
+      title: body.title,
+      slug: body.slug,
+      description: body.description,
+      content: body.content,
+      tags: body.tags,
+      coverImage: body.coverImage,
+      status: body.status,
+      isFeatured: body.isFeatured,
+    });
 
     return NextResponse.json({ success: true, data: blog });
   } catch (error) {
-    if (error instanceof Error && error.message === "Blog not found.") {
-      return NextResponse.json({ error: error.message }, { status: 404 });
-    }
-    if (error instanceof Error && error.message === "Title is required.") {
-      return NextResponse.json({ error: error.message }, { status: 400 });
-    }
-    return authErrorResponse(error);
+    console.error("PATCH /api/admin/blogs/[id] failed:", error);
+    const message =
+      error instanceof Error ? error.message : "Something went wrong.";
+    const status = /not found/i.test(message)
+      ? 404
+      : /required|invalid/i.test(message)
+        ? 400
+        : 500;
+    return NextResponse.json({ error: message }, { status });
   }
 }
 
-/** DELETE /api/admin/blogs/[id] */
-export async function DELETE(req: Request, context: RouteContext) {
+export async function DELETE(req: Request, context: Context) {
   try {
-    const { id } = await context.params;
+    const auth = await requireAdmin(req);
+    if ("error" in auth) return auth.error;
+
     const ip = getClientIp(req);
-    if (rateLimits?.admin) {
-      const rl = await withRateLimit(rateLimits.admin, `${ip}:admin-blogs-write`);
+    if (rateLimits.admin) {
+      const rl = await withRateLimit(rateLimits.admin, `${ip}:admin:blogs:write`);
       if (!rl.success) {
         return NextResponse.json(
           { error: "Too many requests. Try again later." },
@@ -88,14 +109,18 @@ export async function DELETE(req: Request, context: RouteContext) {
       }
     }
 
-    await requireAdmin(req);
-    await deleteBlog(id);
+    const { id } = await context.params;
+    if (!id?.trim()) {
+      return NextResponse.json({ error: "Missing id." }, { status: 400 });
+    }
 
+    await deleteBlog(id);
     return NextResponse.json({ success: true });
   } catch (error) {
-    if (error instanceof Error && error.message === "Blog not found.") {
-      return NextResponse.json({ error: error.message }, { status: 404 });
-    }
-    return authErrorResponse(error);
+    console.error("DELETE /api/admin/blogs/[id] failed:", error);
+    const message =
+      error instanceof Error ? error.message : "Something went wrong.";
+    const status = /not found/i.test(message) ? 404 : 500;
+    return NextResponse.json({ error: message }, { status });
   }
 }

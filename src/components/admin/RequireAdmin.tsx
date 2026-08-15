@@ -1,27 +1,23 @@
 "use client";
 
+import type { ReactNode } from "react";
 import { Loader2 } from "lucide-react";
 import { useAdminAuth } from "@/lib/auth/AdminAuthProvider";
 import AdminLoginForm from "@/components/admin/AdminLoginForm";
 
-/** Gates admin pages: loading → login form → authenticated children. */
-export default function RequireAdmin({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  const { admin, loading } = useAdminAuth();
+export default function RequireAdmin({ children }: { children: ReactNode }) {
+  const { user, loading, isAdmin } = useAdminAuth();
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center gap-2 py-24 text-paper-dim">
+      <div className="flex min-h-[40vh] items-center justify-center gap-2 text-paper-dim">
         <Loader2 className="h-5 w-5 animate-spin" />
         <span className="font-mono text-xs">Checking session…</span>
       </div>
     );
   }
 
-  if (!admin) {
+  if (!user || !isAdmin) {
     return <AdminLoginForm />;
   }
 

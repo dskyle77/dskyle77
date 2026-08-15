@@ -1,17 +1,22 @@
 import { NextResponse } from "next/server";
-import { requireAdmin, authErrorResponse } from "@/server/auth";
 import { getClientIp } from "@/server/ip";
 import { withRateLimit } from "@/server/rateLimits";
 import { rateLimits } from "@/server/rateLimits/limits";
-import { createBlog, getAllBlogsAdmin } from "@/lib/blogs";
-import type { BlogWriteInput } from "@/lib/blogs";
+import { requireAdmin } from "@/server/admin-auth";
+import {
+  createBlog,
+  getAllBlogsAdmin,
+  type BlogWriteInput,
+} from "@/lib/blogs";
 
-/** GET /api/admin/blogs — list all blogs (any status). */
 export async function GET(req: Request) {
   try {
+    const auth = await requireAdmin(req);
+    if ("error" in auth) return auth.error;
+
     const ip = getClientIp(req);
-    if (rateLimits?.admin) {
-      const rl = await withRateLimit(rateLimits.admin, `${ip}:admin-blogs`);
+    if (rateLimits.admin) {
+      const rl = await withRateLimit(rateLimits.admin, `${ip}:admin:blogs`);
       if (!rl.success) {
         return NextResponse.json(
           { error: "Too many requests. Try again later." },
@@ -20,21 +25,25 @@ export async function GET(req: Request) {
       }
     }
 
-    await requireAdmin(req);
     const blogs = await getAllBlogsAdmin(100);
-
     return NextResponse.json({ success: true, data: blogs });
   } catch (error) {
-    return authErrorResponse(error);
+    console.error("GET /api/admin/blogs failed:", error);
+    return NextResponse.json(
+      { error: "Something went wrong. Please try again later." },
+      { status: 500 },
+    );
   }
 }
 
-/** POST /api/admin/blogs — create a blog. */
 export async function POST(req: Request) {
   try {
+    const auth = await requireAdmin(req);
+    if ("error" in auth) return auth.error;
+
     const ip = getClientIp(req);
-    if (rateLimits?.admin) {
-      const rl = await withRateLimit(rateLimits.admin, `${ip}:admin-blogs-write`);
+    if (rateLimits.admin) {
+      const rl = await withRateLimit(rateLimits.admin, `${ip}:admin:blogs:write`);
       if (!rl.success) {
         return NextResponse.json(
           { error: "Too many requests. Try again later." },
@@ -43,11 +52,19 @@ export async function POST(req: Request) {
       }
     }
 
-    await requireAdmin(req);
+    const body = (await req.json().catch(() => null)) as BlogWriteInput | null;
+    if (!body || typeof body !== "object") {
+      return NextResponse.json(
+        { error: "Invalid JSON body." },
+        { status: 400 },
+      );
+    }
 
-    const body = (await req.json()) as BlogWriteInput;
-    if (!body?.title?.trim()) {
-      return NextResponse.json({ error: "Title is required." }, { status: 400 });
+    if (!body.title?.trim()) {
+      return NextResponse.json(
+        { error: "Title is required." },
+        { status: 400 },
+      );
     }
 
     const blog = await createBlog({
@@ -57,16 +74,16 @@ export async function POST(req: Request) {
       content: body.content,
       tags: body.tags,
       coverImage: body.coverImage,
-      heroImageUrl: body.heroImageUrl,
-      status: body.status === "published" ? "published" : "draft",
+      status: body.status,
       isFeatured: body.isFeatured,
     });
 
     return NextResponse.json({ success: true, data: blog }, { status: 201 });
   } catch (error) {
-    if (error instanceof Error && error.message === "Title is required.") {
-      return NextResponse.json({ error: error.message }, { status: 400 });
-    }
-    return authErrorResponse(error);
+    console.error("POST /api/admin/blogs failed:", error);
+    const message =
+      error instanceof Error ? error.message : "Something went wrong.";
+    const status = /required|invalid/i.test(message) ? 400 : 500;
+    return NextResponse.json({ error: message }, { status });
   }
 }
