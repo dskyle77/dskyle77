@@ -5,7 +5,11 @@ export async function withRateLimit(
   identifier: string,
 ) {
   if (!rateLimit) {
-    return { success: true as const, reset: 0, remaining: Number.POSITIVE_INFINITY };
+    return {
+      success: true as const,
+      reset: 0,
+      remaining: Number.POSITIVE_INFINITY,
+    };
   }
 
   const result = await rateLimit.limit(identifier);

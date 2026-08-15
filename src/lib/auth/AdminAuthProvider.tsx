@@ -36,24 +36,54 @@ type AdminAuthState = {
 const AdminAuthContext = createContext<AdminAuthState | null>(null);
 
 async function verifyAdmin(user: User): Promise<AdminUser> {
-  const token = await user.getIdToken();
+  // Force refresh so we don't send a stale token after deploy / claim changes.
+  const token = await user.getIdToken(true);
   const res = await fetch("/api/admin/me", {
     headers: { Authorization: `Bearer ${token}` },
   });
 
+  const body = (await res.json().catch(() => ({}))) as {
+    error?: string;
+    data?: { uid: string; email: string | null; name: string | null };
+  };
+
   if (!res.ok) {
-    const body = await res.json().catch(() => ({}));
     throw new Error(
-      (body as { error?: string }).error ||
-        "You are signed in but not authorized as admin.",
+      body.error || "You are signed in but not authorized as admin.",
     );
   }
 
-  const json = (await res.json()) as {
-    data: { uid: string; email: string | null; name: string | null };
-  };
+  if (!body.data) {
+    throw new Error("Invalid admin profile response.");
+  }
 
-  return json.data;
+  return body.data;
+}
+
+function friendlyAuthError(err: unknown): string {
+  const message = err instanceof Error ? err.message : "Sign in failed.";
+
+  if (
+    message.includes("auth/invalid-credential") ||
+    message.includes("auth/wrong-password") ||
+    message.includes("auth/invalid-login-credentials")
+  ) {
+    return "Invalid email or password.";
+  }
+  if (message.includes("auth/user-not-found")) {
+    return "No account found for that email.";
+  }
+  if (message.includes("auth/too-many-requests")) {
+    return "Too many attempts. Try again later.";
+  }
+  if (message.includes("auth/network-request-failed")) {
+    return "Network error. Check your connection and try again.";
+  }
+
+  return message
+    .replace(/^Firebase:\s*/i, "")
+    .replace(/\s*\(.*\)$/, "")
+    .trim() || "Sign in failed.";
 }
 
 export function AdminAuthProvider({ children }: { children: ReactNode }) {
@@ -80,11 +110,9 @@ export function AdminAuthProvider({ children }: { children: ReactNode }) {
       } catch (err) {
         setAdmin(null);
         setError(
-          err instanceof Error
-            ? err.message
-            : "Not authorized as admin.",
+          err instanceof Error ? err.message : "Not authorized as admin.",
         );
-        // Keep Firebase session so they can see the error; force sign-out of non-admins
+        // Drop the Firebase session for non-admins so the login form stays usable.
         await firebaseSignOut(auth).catch(() => undefined);
         setUser(null);
       } finally {
@@ -100,22 +128,10 @@ export function AdminAuthProvider({ children }: { children: ReactNode }) {
     setLoading(true);
     try {
       await signInWithEmailAndPassword(auth, email.trim(), password);
-      // onAuthStateChanged handles verifyAdmin
+      // onAuthStateChanged → verifyAdmin
     } catch (err) {
       setLoading(false);
-      const message =
-        err instanceof Error ? err.message : "Sign in failed.";
-      // Friendly Firebase auth codes
-      if (message.includes("auth/invalid-credential") || message.includes("auth/wrong-password")) {
-        throw new Error("Invalid email or password.");
-      }
-      if (message.includes("auth/user-not-found")) {
-        throw new Error("No account found for that email.");
-      }
-      if (message.includes("auth/too-many-requests")) {
-        throw new Error("Too many attempts. Try again later.");
-      }
-      throw new Error(message.replace(/^Firebase:\s*/i, "").replace(/\s*\(.*\)$/, ""));
+      throw new Error(friendlyAuthError(err));
     }
   }, []);
 
@@ -128,7 +144,7 @@ export function AdminAuthProvider({ children }: { children: ReactNode }) {
 
   const getIdToken = useCallback(async () => {
     if (!auth.currentUser) return null;
-    return auth.currentUser.getIdToken();
+    return auth.currentUser.getIdToken(true);
   }, []);
 
   const value = useMemo(

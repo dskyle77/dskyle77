@@ -3,7 +3,10 @@ import { getAdminApp } from "@/server/firebase-admin";
 
 let auth: Auth | undefined;
 
-/** Server-only Auth (lazy). Only import from admin/auth routes. */
+/**
+ * Server-only Auth (lazy).
+ * Import only from admin/auth code paths so public routes never pull jose.
+ */
 export function getAdminAuth(): Auth {
   if (!auth) auth = getAuth(getAdminApp());
   return auth;

@@ -1,8 +1,11 @@
-function required(name: string): string {
-  const value = process.env[name];
-  if (!value) throw new Error(`Missing environment variable: ${name}`);
-  return value;
-}
+/**
+ * Server-side environment access.
+ *
+ * Rules:
+ * - Never import this file from client components.
+ * - Redis / rate-limits are optional — missing Upstash vars must not break auth.
+ * - Admin allowlist is optional when you use custom claims (`admin: true`).
+ */
 
 function optional(name: string): string | undefined {
   const value = process.env[name];
@@ -17,10 +20,16 @@ function adminEmails(): string[] {
 }
 
 export const env = {
-  redis: {
-    url: required("UPSTASH_REDIS_REST_URL"),
-    token: required("UPSTASH_REDIS_REST_TOKEN"),
+  /** Optional. When unset, rate limiting is a no-op. */
+  get redis() {
+    const url = optional("UPSTASH_REDIS_REST_URL");
+    const token = optional("UPSTASH_REDIS_REST_TOKEN");
+    if (!url || !token) return null;
+    return { url, token } as const;
   },
 
-  adminEmails: adminEmails(),
+  /** Lowercased allowlist. Empty = rely on Firebase custom claims only. */
+  get adminEmails() {
+    return adminEmails();
+  },
 } as const;

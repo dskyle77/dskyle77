@@ -8,11 +8,20 @@ type Limits = {
   admin?: Ratelimit;
 };
 
-function createLimits(): Limits {
-  const { url, token } = env.redis;
-  if (!url || !token) return {};
+let cached: Limits | null = null;
 
-  const redis = new Redis({ url, token });
+/**
+ * Lazy rate-limit instances.
+ * Returns empty object when Upstash env vars are absent — auth still works.
+ */
+function createLimits(): Limits {
+  const redisEnv = env.redis;
+  if (!redisEnv) return {};
+
+  const redis = new Redis({
+    url: redisEnv.url,
+    token: redisEnv.token,
+  });
 
   return {
     blogs: new Ratelimit({
@@ -33,4 +42,14 @@ function createLimits(): Limits {
   };
 }
 
-export const rateLimits = createLimits();
+export function getRateLimits(): Limits {
+  if (!cached) cached = createLimits();
+  return cached;
+}
+
+/** @deprecated Prefer getRateLimits() — kept for existing route imports. */
+export const rateLimits = new Proxy({} as Limits, {
+  get(_target, prop: string) {
+    return getRateLimits()[prop as keyof Limits];
+  },
+});
