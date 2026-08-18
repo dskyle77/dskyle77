@@ -44,7 +44,7 @@ export default function RootLayout({
     alternateName: site.handle,
     jobTitle: site.role,
     url: site.links.portfolio,
-    image: `${site.links.portfolio}/images/me.png`,
+    image: `${site.links.portfolio}/images/david-onyema-studio-portrait-dap-shirt.jpg`,
     description: `${site.name} — Founder & sole developer of SiteNix. ${site.role} based in ${site.location}`,
     email: site.email,
     sameAs: [

@@ -10,7 +10,7 @@ export const metadata: Metadata = buildMetadata({
   title: "About",
   description: `${site.name} — ${site.role} based in ${site.location}. My story, what I'm building, and what I'm learning.`,
   path: "/about",
-  image: "/images/me.png",
+  image: "/images/david-onyema-studio-portrait-dap-shirt.jpg",
 });
 
 const stats = [
@@ -20,7 +20,7 @@ const stats = [
 ];
 
 export default function AboutPage() {
-  const profileImageFullUrl = `${site.links.portfolio}/images/me.png`;
+  const profileImageFullUrl = `${site.links.portfolio}/images/david-onyema-studio-portrait-dap-shirt.jpg`;
   const jsonLdAbout = {
     "@context": "https://schema.org",
     "@type": "ProfilePage",
@@ -38,9 +38,10 @@ export default function AboutPage() {
         url: profileImageFullUrl,
         contentUrl: profileImageFullUrl,
         caption: `${site.name} — ${site.role} based in ${site.location}`,
-        description: `Official profile picture of ${site.name}, ${site.role} based in ${site.location}.`,
+        description: `Official studio portrait of ${site.name} (dskyle77), full-stack developer and founder of SiteNix based in ${site.location}.`,
         width: "800",
         height: "800",
+        name: `${site.name} studio portrait`,
       },
     },
   };
@@ -67,8 +68,8 @@ export default function AboutPage() {
             <div className="flex flex-col sm:flex-row sm:items-center gap-8 mb-12 border-b border-white/[0.07] pb-10">
               <div className="relative shrink-0">
                 <Image
-                  src="/images/me.png"
-                  alt={`${site.name} — ${site.role} based in ${site.location}`}
+                  src="/images/david-onyema-studio-portrait-dap-shirt.jpg"
+                  alt={`David Onyema — full-stack developer and founder of SiteNix, studio portrait`}
                   title={`${site.name} - ${site.role}`}
                   itemProp="image"
                   width={176}

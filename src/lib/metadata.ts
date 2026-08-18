@@ -20,7 +20,7 @@ export function buildMetadata({
     ? image.startsWith("http")
       ? image
       : `${baseUrl}${image.startsWith("/") ? "" : "/"}${image}`
-    : `${baseUrl}/images/me.png`;
+    : `${baseUrl}/images/david-onyema-studio-portrait-dap-shirt.jpg`;
 
   const ogImages = [
     {

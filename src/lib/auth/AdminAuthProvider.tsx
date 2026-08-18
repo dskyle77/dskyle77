@@ -31,8 +31,9 @@ const AdminAuthContext = createContext<AdminAuthContextValue | null>(null);
 
 function isAllowedAdmin(user: User | null): boolean {
   if (!user?.email) return false;
-  // Client-side check uses the same allow-list (from NEXT_PUBLIC_ADMIN_EMAIL
-  // or a baked list). Server still enforces via ADMIN_EMAIL.
+  // Client-side check must use NEXT_PUBLIC_ADMIN_EMAIL / NEXT_PUBLIC_ADMIN_EMAILS.
+  // Server still enforces the real allow-list via ADMIN_EMAIL / ADMIN_EMAILS.
+  // Never default to true — that caused "looks logged in as admin" + API 403s.
   const publicList = (
     process.env.NEXT_PUBLIC_ADMIN_EMAIL ||
     process.env.NEXT_PUBLIC_ADMIN_EMAILS ||
@@ -42,15 +43,12 @@ function isAllowedAdmin(user: User | null): boolean {
     .map((e) => e.trim().toLowerCase())
     .filter(Boolean);
 
-  // Prefer public list when present (available in the browser).
-  if (publicList.length > 0) {
-    return publicList.includes(user.email.trim().toLowerCase());
+  if (publicList.length === 0) {
+    // No client allow-list configured → do not claim admin status in the UI.
+    return false;
   }
 
-  // Fallback: if only server ADMIN_EMAIL was set, we cannot read it here.
-  // Treat any signed-in user as "maybe admin" and let the API reject non-admins.
-  // For UX we still require a public admin email when possible.
-  return true;
+  return publicList.includes(user.email.trim().toLowerCase());
 }
 
 export function AdminAuthProvider({ children }: { children: ReactNode }) {
