@@ -9,25 +9,36 @@ export type ExperienceEntry = {
   stack?: string[];
 };
 
-// NOTE: periods and highlight specifics are placeholders — swap in your
-// actual dates and real outcomes (numbers, client names if shareable, etc.)
-// wherever you can. Specific beats generic every time.
-
 export const experience: ExperienceEntry[] = [
   {
     id: "sitenix",
     role: "Founder & Developer",
-    org: "Sitenix",
+    org: "SiteNix",
     period: "2026 — Present",
     type: "founder",
     summary:
-      "Built a mini-site platform for small businesses from scratch — idea to live product with real users. Still iterating on it.",
+      "Built a visual website builder for small businesses from scratch — idea to live product with real users. Still the main product I ship and iterate on.",
     highlights: [
       "Reusable-section editor instead of rigid templates",
       "Undo/redo + live editing baked in from day one",
       "Own the whole thing: product calls, code, and deploys",
     ],
     stack: ["Next.js", "TypeScript", "Firebase", "Tailwind CSS"],
+  },
+  {
+    id: "ziva",
+    role: "Founder & Developer",
+    org: "Ziva",
+    period: "2026 — Present",
+    type: "founder",
+    summary:
+      "Building a campus commerce marketplace for university students — orders, payments, vendors, riders, and admins in one place instead of scattered WhatsApp groups.",
+    highlights: [
+      "Multi-role flows: customers, vendors, riders, admins",
+      "Paystack payments + vendor settlements",
+      "OTP auth, WhatsApp notifications (GXU), PWA + FCM push",
+    ],
+    stack: ["Next.js", "TypeScript", "Firebase", "Paystack", "Node.js"],
   },
   {
     id: "topibro",
@@ -66,11 +77,11 @@ export const experience: ExperienceEntry[] = [
     period: "Ongoing",
     type: "gamedev",
     summary:
-      "Side project territory. Small games in Gdevelop, Godot, and Unity. The state machines and feedback loops from games keep showing up in how I write frontend.",
+      "Side project territory. Small games in GDevelop and Godot. The state machines and feedback loops from games keep showing up in how I write frontend.",
     highlights: [
       "Shipped playable prototypes to itch.io",
       "Game-state thinking bleeds into regular UI work in a good way",
     ],
-    stack: ["Gdevelop", "Godot", "Unity"],
+    stack: ["GDevelop", "Godot"],
   },
 ];

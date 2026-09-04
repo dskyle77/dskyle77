@@ -4,16 +4,16 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --ink: #0b0e12;
-  --ink-raised: #12161c;
-  --ink-soft: #161b22;
-  --paper: #edeae0;
-  --paper-dim: #9a9d97;
-  --signal: #2e9eff;
-  --signal-soft: rgba(46, 158, 255, 0.14);
-  --signal-glow: rgba(46, 158, 255, 0.45);
-  --line: #565c60;
-  --hairline: #22262c;
+  --ink: #080a0e;
+  --ink-raised: #0f1319;
+  --ink-soft: #151a22;
+  --paper: #f0f2f5;
+  --paper-dim: #8b929c;
+  --signal: #3b9eff;
+  --signal-soft: rgba(59, 158, 255, 0.12);
+  --signal-glow: rgba(59, 158, 255, 0.4);
+  --line: #3a424c;
+  --hairline: #1c2129;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
@@ -60,7 +60,7 @@
   --color-hairline: var(--hairline);
   --font-sans: var(--font-sans);
   --font-mono: var(--font-mono);
-  --font-display: var(--font-display);
+  --font-display: var(--font-sans);
   --font-heading: var(--font-sans);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
@@ -141,6 +141,7 @@ body {
   .reveal {
     opacity: 1 !important;
     transform: none !important;
+    filter: none !important;
   }
 
   .skill-bar-fill {
@@ -178,7 +179,7 @@ body {
 
 /* ---------- text utilities ---------- */
 .glow-text {
-  text-shadow: 0 0 28px rgba(46, 158, 255, 0.32);
+  text-shadow: 0 0 40px rgba(59, 158, 255, 0.25);
 }
 
 .link-underline {
@@ -198,17 +199,18 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-radius: 0.375rem;
+  border-radius: 9999px;
   background: var(--signal);
   color: var(--ink);
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 0.875rem;
-  font-weight: 500;
-  padding: 0.625rem 1.25rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  padding: 0.7rem 1.4rem;
   transition:
     opacity 0.2s ease,
-    box-shadow 0.28s cubic-bezier(0.22, 1, 0.36, 1),
-    transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+    box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .btn-primary:hover {
@@ -224,18 +226,21 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-radius: 0.375rem;
+  border-radius: 9999px;
   border: 1px solid var(--line);
   color: var(--paper);
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 0.875rem;
   font-weight: 500;
-  padding: 0.625rem 1.25rem;
+  letter-spacing: -0.01em;
+  padding: 0.7rem 1.4rem;
+  background: transparent;
   transition:
-    border-color 0.22s ease,
-    color 0.22s ease,
-    background-color 0.22s ease,
-    transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+    border-color 0.25s ease,
+    color 0.25s ease,
+    background-color 0.25s ease,
+    transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.3s ease;
 }
 
 .btn-secondary:hover {
@@ -293,33 +298,49 @@ body {
 /* ---------- reveal system ---------- */
 .reveal {
   opacity: 0;
-  transform: translateY(16px);
+  transform: translateY(28px);
+  filter: blur(4px);
   transition:
-    opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
-    transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-  will-change: opacity, transform;
+    opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform, filter;
 }
 
 .reveal.is-visible {
   opacity: 1;
   transform: translateY(0);
+  filter: blur(0);
   will-change: auto;
 }
 
+.reveal-left {
+  transform: translateX(-24px);
+}
+.reveal-right {
+  transform: translateX(24px);
+}
+.reveal-scale {
+  transform: scale(0.96);
+}
+.reveal-fade {
+  transform: none;
+}
+
 .reveal-delay-1 {
-  transition-delay: 50ms;
+  transition-delay: 60ms;
 }
 .reveal-delay-2 {
-  transition-delay: 100ms;
+  transition-delay: 120ms;
 }
 .reveal-delay-3 {
-  transition-delay: 150ms;
+  transition-delay: 180ms;
 }
 .reveal-delay-4 {
-  transition-delay: 200ms;
+  transition-delay: 240ms;
 }
 .reveal-delay-5 {
-  transition-delay: 250ms;
+  transition-delay: 300ms;
 }
 
 /* ---------- skill bars ---------- */
@@ -677,4 +698,52 @@ body {
   html {
     @apply font-sans;
   }
+}
+
+
+/* ---------- modern glass / surface ---------- */
+.glass-card {
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.04) 0%,
+    rgba(255, 255, 255, 0.015) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  backdrop-filter: blur(12px);
+  transition:
+    border-color 0.3s ease,
+    background 0.3s ease,
+    transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-card:hover {
+  border-color: rgba(59, 158, 255, 0.28);
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.055) 0%,
+    rgba(255, 255, 255, 0.02) 100%
+  );
+  box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(59, 158, 255, 0.08);
+  transform: translateY(-3px);
+}
+
+/* Soft pulse for status dots */
+@keyframes soft-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.65; transform: scale(0.92); }
+}
+.animate-soft-pulse {
+  animation: soft-pulse 2.4s ease-in-out infinite;
+}
+
+/* Floating ambient orbs (replaces harsh auroras in places) */
+@keyframes float-slow {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(12px, -18px) scale(1.05); }
+  66% { transform: translate(-10px, 10px) scale(0.97); }
+}
+.animate-float-slow {
+  animation: float-slow 14s ease-in-out infinite;
 }

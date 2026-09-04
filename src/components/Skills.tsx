@@ -2,49 +2,39 @@
 
 import { site } from "@/lib/site";
 import Reveal from "./shared/Reveal";
-import Aurora from "./shared/Aurora";
 
 export default function Skills() {
   return (
-    <section className="relative mx-auto max-w-5xl px-6 py-20">
-      <Aurora intensity={0.3} className="top-0 left-0" />
+    <section className="relative mx-auto max-w-5xl px-6 py-24">
       <Reveal>
-        <p className="mb-3 font-mono text-xs uppercase tracking-[0.18em] text-signal">
+        <p className="mb-3 text-xs font-medium uppercase tracking-[0.14em] text-signal">
           Stack
         </p>
-
-        <h2 className="mb-12 font-display text-2xl leading-tight text-paper sm:text-3xl">
+        <h2 className="mb-14 text-3xl font-semibold tracking-tight text-paper sm:text-4xl">
           What I build with
         </h2>
       </Reveal>
 
-      <div className="grid gap-12 sm:grid-cols-2">
+      <div className="grid gap-10 sm:grid-cols-2">
         {Object.entries(site.stack).map(([category, skills], catIndex) => (
-          <Reveal key={category} delay={(catIndex + 1) as 1 | 2}>
+          <Reveal key={category} delay={(catIndex + 1) as 1 | 2 | 3 | 4}>
             <div>
-              {/* Category header */}
-              <div className="mb-5 flex items-center gap-3">
-                <h3 className="font-mono text-xs uppercase tracking-[0.16em] text-paper-dim">
+              <div className="mb-4 flex items-center gap-3">
+                <h3 className="text-xs font-medium uppercase tracking-[0.12em] text-paper-dim">
                   {category}
                 </h3>
-
                 <span className="h-px flex-1 bg-white/8" />
               </div>
 
-              {/* Skills */}
-              <div className="grid grid-cols-2 gap-2.5">
+              <div className="flex flex-wrap gap-2">
                 {skills.map((skill) => (
                   <div
                     key={skill.name}
-                    className="group relative rounded-md border border-white/8 bg-ink-raised px-4 py-3.5 transition-all duration-200 hover:border-signal/40 hover:bg-white/2.5"
+                    className="group rounded-full border border-white/8 bg-ink-raised px-4 py-2.5 transition-all duration-300 hover:border-signal/35 hover:bg-white/[0.04] hover:shadow-[0_0_20px_-6px_rgba(59,158,255,0.25)]"
                   >
-                    <div className="flex items-center gap-2.5">
-                      <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-signal/60 transition-colors group-hover:bg-signal" />
-
-                      <span className="font-mono text-sm text-paper">
-                        {skill.name}
-                      </span>
-                    </div>
+                    <span className="text-sm font-medium text-paper transition-colors group-hover:text-paper">
+                      {skill.name}
+                    </span>
                   </div>
                 ))}
               </div>
@@ -53,14 +43,12 @@ export default function Skills() {
         ))}
       </div>
 
-      {/* Bottom note */}
-      <Reveal delay={3}>
-        <div className="mt-12 border-t border-white/8 pt-5">
-          <p className="max-w-2xl font-mono text-xs leading-6 text-paper-dim">
-            I care less about collecting technologies and more about knowing how
-            to use the right ones to ship something that works.
-          </p>
-        </div>
+      <Reveal delay={5}>
+        <p className="mt-12 max-w-2xl text-sm leading-relaxed text-paper-dim">
+          Fundamentals first — HTML, CSS, and JavaScript — then frameworks and
+          tools. I care more about shipping something that works than collecting
+          logos.
+        </p>
       </Reveal>
     </section>
   );

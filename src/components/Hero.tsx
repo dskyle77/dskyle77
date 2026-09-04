@@ -1,18 +1,18 @@
 /* eslint-disable @next/next/no-html-link-for-pages */
 import { site } from "@/lib/site";
-import BuildLog from "./shared/BuildLog";
-import StatCard from "./shared/StatCard";
 import Reveal from "./shared/Reveal";
 import BackgroundGrid from "./shared/BackgroundGrid";
 import Aurora from "./shared/Aurora";
 
 const stack = [
-  "NEXT.JS",
-  "TYPESCRIPT",
-  "REACT",
-  "FIREBASE",
-  "NODE.JS",
-  "TAILWIND",
+  "HTML",
+  "CSS",
+  "JavaScript",
+  "TypeScript",
+  "React",
+  "Next.js",
+  "Node.js",
+  "Firebase",
 ];
 
 export default function Hero() {
@@ -20,123 +20,96 @@ export default function Hero() {
     <section className="relative isolate min-h-[calc(100vh-52px)] overflow-hidden">
       <BackgroundGrid />
       <Aurora
-        intensity={0.35}
-        className="-right-40 -top-32 h-128 w-lg animate-hero-aurora"
+        intensity={0.28}
+        className="-right-32 -top-24 h-[28rem] w-[28rem] animate-float-slow"
       />
-
       <Aurora
-        intensity={0.18}
-        className="-left-40 top-20 h-96 w-96 animate-hero-aurora-reverse"
+        intensity={0.14}
+        className="-left-28 top-32 h-80 w-80 animate-float-slow [animation-delay:-4s]"
       />
 
-      <div className="mx-auto max-w-6xl px-6 pt-20 pb-10 sm:pt-28 sm:pb-12">
-        <div className="grid gap-14 sm:grid-cols-[1.35fr_0.9fr] sm:items-center">
-          {/* Main intro */}
-          <div>
-            <Reveal>
-              <div className="mb-5 flex items-center gap-3">
-                <span className="h-px w-7 bg-signal" />
-
-                <p className="font-mono text-xs uppercase tracking-[0.18em] text-signal">
-                  {site.role} · {site.location}
-                </p>
-              </div>
-            </Reveal>
-
-            <Reveal delay={1}>
-              <h1 className="max-w-3xl font-display text-3xl leading-[1.15] text-paper glow-text text-balance sm:text-5xl lg:text-6xl">
-                {site.name}
-              </h1>
-            </Reveal>
-
-            <Reveal delay={2}>
-              <p className="mt-7 max-w-xl text-base leading-8 text-paper-dim sm:text-lg">
-                {site.tagline}
+      <div className="mx-auto max-w-6xl px-6 pt-24 pb-16 sm:pt-32 sm:pb-20">
+        <div className="max-w-3xl">
+          <Reveal>
+            <div className="mb-6 flex items-center gap-3">
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-soft-pulse rounded-full bg-signal opacity-60" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-signal" />
+              </span>
+              <p className="text-sm font-medium tracking-wide text-signal">
+                {site.role} · {site.location}
               </p>
-            </Reveal>
+            </div>
+          </Reveal>
 
-            <Reveal delay={3}>
-              <div className="mt-9 flex flex-wrap gap-3">
-                <a
-                  href={site.links.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn-primary"
-                >
-                  View GitHub
-                </a>
+          <Reveal delay={1}>
+            <h1 className="text-4xl font-semibold leading-[1.1] tracking-tight text-paper text-balance sm:text-5xl lg:text-6xl">
+              {site.name}
+            </h1>
+          </Reveal>
 
-                <a href="/projects" className="btn-secondary">
-                  See projects
-                </a>
-
-                <a href="/resume" className="btn-secondary">
-                  Resume
-                </a>
-
-                <a
-                  href="/David_Onyema_Resume.pdf"
-                  download="David_Onyema_Resume.pdf"
-                  className="btn-secondary"
-                >
-                  Download CV
-                </a>
-              </div>
-            </Reveal>
-          </div>
-
-          {/* Developer profile */}
           <Reveal delay={2}>
-            <div className="space-y-4">
-              <div className="flex items-center justify-between px-1 font-mono text-[10px] uppercase tracking-[0.2em] text-paper-dim">
-                <span>developer.profile</span>
-                <span>01</span>
-              </div>
+            <p className="mt-6 max-w-xl text-lg leading-relaxed text-paper-dim sm:text-xl">
+              {site.tagline}
+            </p>
+          </Reveal>
 
-              <StatCard />
-
-              <BuildLog />
+          <Reveal delay={3}>
+            <div className="mt-10 flex flex-wrap gap-3">
+              <a
+                href={site.links.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-primary"
+              >
+                GitHub
+              </a>
+              <a href="/projects" className="btn-secondary">
+                Projects
+              </a>
+              <a href="/resume" className="btn-secondary">
+                Resume
+              </a>
+              <a
+                href="/David_Onyema_Resume.pdf"
+                download="David_Onyema_Resume.pdf"
+                className="btn-secondary"
+              >
+                Download CV
+              </a>
             </div>
           </Reveal>
         </div>
 
-        {/* Current focus */}
+        {/* Focus + stack strip */}
         <Reveal delay={4}>
-          <div className="mt-16 border-y border-white/8 py-5">
-            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-              <span className="shrink-0 font-mono text-[10px] uppercase tracking-[0.2em] text-paper-dim">
-                CURRENT FOCUS
-              </span>
-
-              <p className="font-mono text-xs leading-relaxed text-paper-dim sm:text-right">
+          <div className="mt-20 grid gap-6 border-t border-white/8 pt-8 sm:grid-cols-[1.2fr_0.8fr] sm:items-start">
+            <div>
+              <p className="mb-2 text-xs font-medium uppercase tracking-[0.14em] text-paper-dim">
+                Currently
+              </p>
+              <p className="text-sm leading-relaxed text-paper/90 sm:text-base">
                 {site.currentFocus}
               </p>
+            </div>
+            <div className="flex flex-wrap gap-2 sm:justify-end">
+              {stack.map((item) => (
+                <span
+                  key={item}
+                  className="rounded-full border border-white/10 bg-white/[0.03] px-3 py-1.5 text-xs font-medium text-paper-dim transition-colors hover:border-signal/40 hover:text-paper"
+                >
+                  {item}
+                </span>
+              ))}
             </div>
           </div>
         </Reveal>
 
-        {/* Stack */}
         <Reveal delay={5}>
-          <div className="mt-6 flex flex-wrap gap-x-6 gap-y-2">
-            {stack.map((item) => (
-              <span
-                key={item}
-                className="font-mono text-[10px] tracking-widest text-paper-dim/70 transition-colors hover:text-signal"
-              >
-                {item}
-              </span>
-            ))}
-          </div>
-        </Reveal>
-
-        {/* Footer signal */}
-        <Reveal delay={5}>
-          <div className="mt-8 flex items-center justify-between font-mono text-[10px] text-paper-dim/50">
-            <span>BUILD → SHIP → LEARN → REPEAT</span>
-
-            <span className="hidden sm:block">
-              <span className="text-signal">●</span> AVAILABLE
-            </span>
+          <div className="mt-10 flex items-center gap-4 text-xs text-paper-dim/70">
+            <span className="font-medium text-paper-dim">@{site.handle}</span>
+            <span className="h-px w-6 bg-white/15" />
+            <span>Available for work</span>
           </div>
         </Reveal>
       </div>

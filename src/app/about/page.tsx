@@ -58,7 +58,7 @@ export default function AboutPage() {
           <Reveal>
             <div className="mb-5 flex items-center gap-3">
               <span className="h-px w-7 bg-signal" />
-              <p className="font-mono text-xs uppercase tracking-[0.18em] text-signal">
+              <p className="text-xs font-medium uppercase tracking-[0.14em] text-signal">
                 About · Profile
               </p>
             </div>
@@ -81,10 +81,10 @@ export default function AboutPage() {
               </div>
 
               <div>
-                <h1 className="font-display text-4xl leading-[1.05] tracking-tight text-paper sm:text-6xl">
+                <h1 className="text-4xl font-semibold leading-[1.05] tracking-tight text-paper sm:text-6xl">
                   {site.name}
                 </h1>
-                <p className="mt-3 font-mono text-sm uppercase tracking-widest text-signal">
+                <p className="mt-3 text-sm font-medium tracking-wide text-signal">
                   {site.role} · {site.location}
                 </p>
               </div>
@@ -93,12 +93,13 @@ export default function AboutPage() {
 
           <div className="space-y-6 text-paper-dim leading-relaxed text-base sm:text-lg max-w-3xl">
             <Reveal delay={2}>
-              <p className="rounded-lg border border-white/8 bg-ink-raised/60 p-6 backdrop-blur-xs">
+              <p className="rounded-2xl border border-white/8 bg-ink-raised/60 p-6 backdrop-blur-xs">
                 I&apos;m {site.name} — online I go by{" "}
                 <span className="text-paper font-semibold">{site.handle}</span>.
-                Full-Stack Developer based in Lagos, Nigeria. I build responsive
-                web applications, APIs, content systems, and internal tools with
-                Next.js, TypeScript, Node.js, and Firebase.
+                Junior full-stack developer based in Lagos, Nigeria. I build
+                responsive web apps, APIs, and tools with HTML, CSS, JavaScript,
+                TypeScript, React, Next.js, Node.js, Express, Firebase, and
+                SQLite.
               </p>
             </Reveal>
 
@@ -123,25 +124,25 @@ export default function AboutPage() {
 
             <Reveal delay={5}>
               <p>
-                Outside of web work I build small games with Gdevelop, Godot,
-                and Unity. Thinking about game state, feedback loops, and tight
-                interactions has changed how I approach frontend. Same instinct,
-                different medium — make it feel responsive.
+                Outside of web work I build small games with GDevelop and Godot.
+                Thinking about game state, feedback loops, and tight interactions
+                has changed how I approach frontend. Same instinct, different
+                medium — make it feel responsive.
               </p>
             </Reveal>
           </div>
 
           <Reveal delay={3}>
-            <div className="mt-14 grid grid-cols-1 sm:grid-cols-3 gap-4 rounded-xl border border-white/10 bg-ink-raised/80 p-6 backdrop-blur-md shadow-[0_10px_40px_-15px_rgba(0,0,0,0.5)]">
+            <div className="mt-14 grid grid-cols-1 sm:grid-cols-3 gap-4 rounded-2xl border border-white/10 bg-ink-raised/80 p-6 backdrop-blur-md shadow-[0_10px_40px_-15px_rgba(0,0,0,0.5)]">
               {stats.map((stat) => (
                 <div
                   key={stat.label}
                   className="group flex flex-col items-center justify-center p-4 rounded-lg transition-colors hover:bg-white/2 border border-transparent hover:border-signal/20"
                 >
-                  <p className="font-mono text-3xl sm:text-4xl font-bold text-signal tabular-nums group-hover:scale-105 transition-transform duration-300">
+                  <p className="text-3xl sm:text-4xl font-bold text-signal tabular-nums group-hover:scale-105 transition-transform duration-300">
                     {stat.value}
                   </p>
-                  <p className="mt-2 font-mono text-[10px] uppercase tracking-[0.18em] text-paper-dim/80 text-center">
+                  <p className="mt-2 text-[11px] font-medium uppercase tracking-[0.12em] text-paper-dim/80 text-center">
                     {stat.label}
                   </p>
                 </div>
@@ -150,17 +151,17 @@ export default function AboutPage() {
           </Reveal>
 
           <Reveal delay={4}>
-            <div className="mt-8 rounded-xl border border-signal/30 bg-signal/5 p-6 backdrop-blur-sm">
+            <div className="mt-8 rounded-2xl border border-signal/30 bg-signal/5 p-6 backdrop-blur-sm">
               <div className="flex items-center gap-2 mb-2">
                 <span className="relative flex h-2 w-2">
                   <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-signal opacity-75" />
                   <span className="relative inline-flex h-2 w-2 rounded-full bg-signal" />
                 </span>
-                <h2 className="font-mono text-xs uppercase tracking-[0.2em] text-signal">
+                <h2 className="text-xs font-medium uppercase tracking-[0.14em] text-signal">
                   Current Focus
                 </h2>
               </div>
-              <p className="font-mono text-sm text-paper leading-relaxed">
+              <p className="text-sm text-paper leading-relaxed">
                 {site.currentFocus}
               </p>
             </div>

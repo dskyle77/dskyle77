@@ -5,31 +5,36 @@ export default function ProjectCard({ project }: { project: Project }) {
   return (
     <Link
       href={`/projects/${project.slug}`}
-      className="group card-lift card-accent block rounded-lg border border-hairline bg-ink-raised/50 p-6 hover:border-signal/60"
+      className="group glass-card block rounded-2xl p-6"
     >
       <div className="flex items-start justify-between gap-4">
-        <h3 className="font-mono text-lg font-semibold text-paper group-hover:text-signal transition-colors duration-300">
+        <h3 className="text-lg font-semibold tracking-tight text-paper transition-colors duration-300 group-hover:text-signal">
           {project.title}
         </h3>
         <span
           aria-hidden="true"
-          className="font-mono text-signal opacity-0 -translate-x-1.5 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300"
+          className="-translate-x-1.5 text-signal opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100"
         >
           →
         </span>
       </div>
-      <p className="mt-2.5 text-sm text-paper-dim leading-relaxed">
+      <p className="mt-2.5 text-sm leading-relaxed text-paper-dim">
         {project.summary}
       </p>
       <ul className="mt-5 flex flex-wrap gap-2">
-        {project.stack.map((tech) => (
+        {project.stack.slice(0, 5).map((tech) => (
           <li
             key={tech}
-            className="rounded border border-line/80 px-2 py-1 font-mono text-xs text-paper-dim group-hover:border-signal/35 transition-colors duration-300"
+            className="rounded-full border border-white/10 px-2.5 py-1 text-[11px] text-paper-dim transition-colors duration-300 group-hover:border-signal/30"
           >
             {tech}
           </li>
         ))}
+        {project.stack.length > 5 && (
+          <li className="px-1 py-1 text-[11px] text-paper-dim/50">
+            +{project.stack.length - 5}
+          </li>
+        )}
       </ul>
     </Link>
   );

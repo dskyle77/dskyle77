@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { JetBrains_Mono, Press_Start_2P, Geist } from "next/font/google";
+import { JetBrains_Mono, Geist } from "next/font/google";
 import "./globals.css";
 import { buildMetadata } from "@/lib/metadata";
 import { site } from "@/lib/site";
@@ -19,15 +19,8 @@ const geist = Geist({
   display: "swap",
 });
 
-const display = Press_Start_2P({
-  variable: "--font-display",
-  subsets: ["latin"],
-  weight: "400",
-  display: "swap",
-});
-
 export const metadata: Metadata = buildMetadata({
-  title: `${site.name} — Founder of SiteNix · Full-Stack Developer`,
+  title: `${site.name} — Junior Full-Stack Developer · Founder of SiteNix`,
   description: site.tagline,
   image: "/images/og.png",
 });
@@ -45,7 +38,7 @@ export default function RootLayout({
     jobTitle: site.role,
     url: site.links.portfolio,
     image: `${site.links.portfolio}/images/david-onyema-studio-portrait-dap-shirt.jpg`,
-    description: `${site.name} — Founder & sole developer of SiteNix. ${site.role} based in ${site.location}`,
+    description: `${site.name} — ${site.role}. Founder of SiteNix. Based in ${site.location}`,
     email: site.email,
     sameAs: [
       site.links.github,
@@ -60,16 +53,20 @@ export default function RootLayout({
       addressCountry: "NG",
     },
     knowsAbout: [
+      "HTML",
+      "CSS",
+      "JavaScript",
+      "TypeScript",
       "React",
       "Next.js",
-      "TypeScript",
-      "Firebase",
-      "Tailwind CSS",
       "Node.js",
-      "JavaScript",
-      "Web Development",
+      "Express.js",
+      "Firebase",
+      "SQLite",
+      "Tailwind CSS",
       "Game Development",
       "SiteNix",
+      "Ziva",
     ],
     founder: {
       "@type": "Organization",
@@ -85,7 +82,6 @@ export default function RootLayout({
         "h-full",
         "scroll-smooth",
         mono.variable,
-        display.variable,
         "font-sans",
         geist.variable,
       )}

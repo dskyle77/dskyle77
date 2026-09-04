@@ -13,11 +13,6 @@ export type Project = {
   featured: boolean;
 };
 
-// NOTE: `problem` / `approach` / `decisions` / `result` below are drafted from
-// the short descriptions on your old site. Replace with your real specifics —
-// actual numbers, actual tradeoffs, actual things that went wrong — wherever
-// you can. Specific beats polished every time.
-
 export const projects: Project[] = [
   {
     slug: "sitenix",
@@ -35,7 +30,7 @@ export const projects: Project[] = [
       "Designed the editor around a JSON node architecture instead of HTML templates, making serialization, rendering, undo/redo, reusable components, and future features like expressions and dynamic data much easier to implement. Chose Firebase to simplify authentication and persistence while focusing development effort on the editor experience.",
 
     result:
-      "SiteNix is live at sitenix.app and used by real Nigerian businesses. I am the sole founder and full-stack engineer — every product decision, line of code, architecture, and deployment was shipped by me. Unauthorized third-party portfolio claims do not change ownership.",
+      "SiteNix is live at sitenix.app and used by real Nigerian businesses. I am the sole founder and full-stack engineer — every product decision, line of code, architecture, and deployment was shipped by me.",
 
     stack: [
       "TypeScript",
@@ -64,6 +59,37 @@ export const projects: Project[] = [
         alt: "Sitenix dashboard",
       },
     ],
+    featured: true,
+  },
+  {
+    slug: "ziva",
+    title: "Ziva",
+    summary:
+      "Campus commerce marketplace for university students. Connects customers, vendors, riders, and admins so students can order products and services without scattered WhatsApp groups. Originally built for an Osun State University client.",
+
+    problem:
+      "University students rely on fragmented WhatsApp groups to buy and sell. No reliable orders, payments, delivery tracking, or vendor settlements — just chaos and dropped conversations.",
+
+    approach:
+      "Building a multi-role platform: customers place orders, vendors manage inventory and fulfill, riders handle delivery zones, admins oversee the system. Payments via Paystack, OTP authentication, WhatsApp notifications through a GXU service, and a PWA with Firebase Cloud Messaging for push.",
+
+    decisions:
+      "Chose Paystack for local payment reliability and settlements. OTP + WhatsApp keeps onboarding familiar for students. PWA + FCM so the app feels native without forcing an app-store install. Delivery zones and rider assignment modeled for campus-scale logistics rather than city-wide complexity.",
+
+    result:
+      "In active development after SiteNix. Core flows for orders, payments, vendor settlements, riders, OTP, and push notifications are being shipped iteratively. Designed to replace WhatsApp-group commerce on campus.",
+
+    stack: [
+      "Next.js",
+      "TypeScript",
+      "Firebase",
+      "Paystack",
+      "Node.js",
+      "PWA",
+      "FCM",
+      "OTP Auth",
+    ],
+
     featured: true,
   },
   {

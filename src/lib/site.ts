@@ -1,10 +1,10 @@
 export const site = {
   name: "David Onyema",
   handle: "dskyle77",
-  role: "Founder of SiteNix · Full-Stack Developer",
+  role: "Junior Full-Stack Developer",
 
   tagline:
-    "Founder & sole developer of SiteNix. I build and ship web products end-to-end — from responsive interfaces to APIs, databases, and deployment.",
+    "Founder of SiteNix. I build and ship web products end-to-end — from clean interfaces to APIs, databases, and deployment.",
 
   location: "Lagos, Nigeria",
 
@@ -20,39 +20,40 @@ export const site = {
   },
 
   currentFocus:
-    "Building real systems with Next.js, TypeScript, Firebase, and Node.js.",
+    "SiteNix — visual website builder with AI-assisted content, reusable components, and a live editing experience. Also building Ziva, a campus commerce marketplace.",
+
   stack: {
-    "Web Development": [
+    Fundamentals: [
       { name: "HTML", level: 95 },
       { name: "CSS", level: 90 },
-      { name: "Tailwind CSS", level: 95 },
       { name: "JavaScript", level: 92 },
       { name: "TypeScript", level: 85 },
-      { name: "React / Next.js", level: 90 },
-      { name: "Node.js", level: 75 },
-      { name: "Git", level: 75 },
     ],
-    "Game Development": [
-      { name: "Gdevelop", level: 90 },
+    Frontend: [
+      { name: "React", level: 90 },
+      { name: "Next.js", level: 90 },
+      { name: "Tailwind CSS", level: 95 },
+    ],
+    Backend: [
+      { name: "Node.js", level: 78 },
+      { name: "Next.js API", level: 85 },
+      { name: "Express.js", level: 72 },
+      { name: "Firebase", level: 88 },
+      { name: "SQLite", level: 70 },
+    ],
+    "Game Dev": [
+      { name: "GDevelop", level: 90 },
       { name: "Godot", level: 70 },
-      { name: "Unity", level: 65 },
     ],
   },
 } as const;
 
 export const buildLog = [
-  "$ shipped: Sitenix mini-site editor",
-  "$ deployed: Blog Dashboard v2",
-  "$ optimized: LCP 2.4s → 0.7s",
-  "$ refactored: App Router migration",
-  "$ learning: Express.js fundamentals",
-  "$ built: REST API with Express",
-  "$ added: JWT auth middleware",
-  "$ connected: MongoDB",
-  "$ fixed: CORS issues in prod",
-  "$ created: reusable Express middleware",
-  "$ integrated: Firebase Admin SDK",
-  "$ debugging: async route handlers",
-  "$ writing: a lot of .ts at Topibro",
-  "$ planning: Sitenix backend",
+  "SiteNix visual editor still iterating",
+  "Shipped reusable-section editor + undo/redo",
+  "AI-assisted content on SiteNix",
+  "Building Ziva — campus commerce",
+  "Paystack + OTP + PWA push",
+  "Learning Express + Mongo patterns",
+  "Shipping at Topibro",
 ] as const;
