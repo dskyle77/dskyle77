@@ -140,28 +140,44 @@ export const projects: Project[] = [
     featured: true,
   },
   {
-    slug: "benzene-plus-academy",
-    title: "Benzene Plus Academy",
-    summary:
-      "A full-stack enrollment platform and content management system for a prominent JAMB, WAEC & NECO tutorial academy in Lagos, engineered to convert visiting parents into registered students.",
-    problem:
-      "An educational academy competing for trust needs a credible, high-converting web presence with visible proof of results, clear program tracking, and a seamless onboarding system, alongside an internal tool for staff to update student records without editing source code.",
-    approach:
-      "Structured the platform into a high-converting public storefront and a secure admin dashboard. The user-facing site focuses on trust signals: localized stats, testimonials, and structured exam breakdowns (JAMB, Post-UTME, WAEC). Built a secure content management dashboard that allows administrators to dynamically publish educational blogs and update top-scorer metrics per exam cycle.",
-    decisions:
-      "Integrated a secure admin dashboard using Firebase to allow non-technical staff to update results every academic year. For the consumer side, I routed registrations through WhatsApp deep links instead of complex data forms, drastically reducing friction since Nigerian parents prefer direct instant messaging for high-trust decisions like education.",
-    result:
-      "Fully operational and deployed. The academy now independently publishes weekly blogs and updates top-scoring student profiles each JAMB cycle via their private dashboard, resulting in self-sustaining data management and an active pipeline of student inquiries.",
-    stack: ["Next.js", "TypeScript", "Tailwind CSS", "Firebase"],
-    liveUrl: "https://benzene-plus-academy.vercel.app/",
-    images: [
-      {
-        src: "/image-previews/benzene-plus-academy.png",
-        alt: "Benzene Plus Academy",
-      },
-    ],
-    featured: true,
-  },
+  slug: "naija66",
+  title: "Naija 66",
+  summary:
+    "A visually immersive Independence Day experience designed to bring Nigeria's history and identity together through expressive typography, motion, and interactive storytelling.",
+
+  problem:
+    "Independence-themed websites often rely on generic patriotic visuals and static information layouts, creating experiences that feel more like announcements than something people want to explore.",
+
+  approach:
+    "Designed Naija 66 as a modern editorial experience built around strong typography, Nigerian-inspired visual details, generous whitespace, and subtle motion. The interface combines historical storytelling with interactive elements such as timelines, state exploration, comparisons, and quizzes while keeping the visual system consistent throughout.",
+
+  decisions:
+    "Used an understated off-white and charcoal foundation with Nigerian green as the primary accent, allowing the content and imagery to remain the focus. Established reusable design tokens, responsive layouts, shared components, and a small motion system to create consistent transitions and micro-interactions across the experience.",
+
+  result:
+    "Created a polished, responsive visual experience that presents Nigerian history and culture in a contemporary way while establishing a flexible design system that can support future interactive stories and features.",
+
+  stack: [
+    "TypeScript",
+    "React",
+    "Next.js",
+    "Tailwind CSS",
+    "Motion",
+    "Vercel",
+  ],
+
+  repoUrl: "https://github.com/dskyle77/naija66",
+  liveUrl: "https://naija66.vercel.app/",
+
+  images: [
+    {
+      src: "/image-previews/naija66.png",
+      alt: "Naija 66",
+    },
+  ],
+
+  featured: true,
+},
 ];
 
 export function getFeaturedProjects() {
