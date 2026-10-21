@@ -7,10 +7,7 @@ import ProjectCard from "./shared/ProjectCard";
 export default function Projects() {
   const featured = getFeaturedProjects();
   const sitenix = featured.find((p) => p.slug === "sitenix");
-  const ziva = featured.find((p) => p.slug === "ziva");
-  const others = featured.filter(
-    (p) => p.slug !== "sitenix" && p.slug !== "ziva",
-  );
+  const others = featured.filter((p) => p.slug !== "sitenix");
 
   return (
     <section className="relative mx-auto max-w-5xl px-6 py-24">
@@ -143,7 +140,7 @@ export default function Projects() {
       )}
 
       {/* Ziva card */}
-      {ziva && (
+      {/* {ziva && (
         <Reveal delay={1}>
           <Link
             href={`/projects/${ziva.slug}`}
@@ -179,7 +176,7 @@ export default function Projects() {
             </div>
           </Link>
         </Reveal>
-      )}
+      )} */}
 
       {/* Other projects grid */}
       {others.length > 0 && (

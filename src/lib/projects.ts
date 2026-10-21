@@ -89,6 +89,11 @@ export const projects: Project[] = [
       "FCM",
       "OTP Auth",
     ],
+    liveUrl: "https://zivamarketplace.com",
+    images: [
+      { src: "/image-previews/ziva-home.png", alt: "Ziva Home Page" },
+      { src: "/image-previews/ziva-market.png", alt: "Ziva Market" }
+    ],
 
     featured: true,
   },
@@ -140,44 +145,44 @@ export const projects: Project[] = [
     featured: true,
   },
   {
-  slug: "naija66",
-  title: "Naija 66",
-  summary:
-    "A visually immersive Independence Day experience designed to bring Nigeria's history and identity together through expressive typography, motion, and interactive storytelling.",
+    slug: "naija66",
+    title: "Naija 66",
+    summary:
+      "A visually immersive Independence Day experience designed to bring Nigeria's history and identity together through expressive typography, motion, and interactive storytelling.",
 
-  problem:
-    "Independence-themed websites often rely on generic patriotic visuals and static information layouts, creating experiences that feel more like announcements than something people want to explore.",
+    problem:
+      "Independence-themed websites often rely on generic patriotic visuals and static information layouts, creating experiences that feel more like announcements than something people want to explore.",
 
-  approach:
-    "Designed Naija 66 as a modern editorial experience built around strong typography, Nigerian-inspired visual details, generous whitespace, and subtle motion. The interface combines historical storytelling with interactive elements such as timelines, state exploration, comparisons, and quizzes while keeping the visual system consistent throughout.",
+    approach:
+      "Designed Naija 66 as a modern editorial experience built around strong typography, Nigerian-inspired visual details, generous whitespace, and subtle motion. The interface combines historical storytelling with interactive elements such as timelines, state exploration, comparisons, and quizzes while keeping the visual system consistent throughout.",
 
-  decisions:
-    "Used an understated off-white and charcoal foundation with Nigerian green as the primary accent, allowing the content and imagery to remain the focus. Established reusable design tokens, responsive layouts, shared components, and a small motion system to create consistent transitions and micro-interactions across the experience.",
+    decisions:
+      "Used an understated off-white and charcoal foundation with Nigerian green as the primary accent, allowing the content and imagery to remain the focus. Established reusable design tokens, responsive layouts, shared components, and a small motion system to create consistent transitions and micro-interactions across the experience.",
 
-  result:
-    "Created a polished, responsive visual experience that presents Nigerian history and culture in a contemporary way while establishing a flexible design system that can support future interactive stories and features.",
+    result:
+      "Created a polished, responsive visual experience that presents Nigerian history and culture in a contemporary way while establishing a flexible design system that can support future interactive stories and features.",
 
-  stack: [
-    "TypeScript",
-    "React",
-    "Next.js",
-    "Tailwind CSS",
-    "Motion",
-    "Vercel",
-  ],
+    stack: [
+      "TypeScript",
+      "React",
+      "Next.js",
+      "Tailwind CSS",
+      "Motion",
+      "Vercel",
+    ],
 
-  repoUrl: "https://github.com/dskyle77/naija66",
-  liveUrl: "https://naija66.vercel.app/",
+    repoUrl: "https://github.com/dskyle77/naija66",
+    liveUrl: "https://naija66.vercel.app/",
 
-  images: [
-    {
-      src: "/image-previews/naija66.png",
-      alt: "Naija 66",
-    },
-  ],
+    images: [
+      {
+        src: "/image-previews/naija66.png",
+        alt: "Naija 66",
+      },
+    ],
 
-  featured: true,
-},
+    featured: true,
+  },
 ];
 
 export function getFeaturedProjects() {
