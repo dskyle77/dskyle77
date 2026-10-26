@@ -65,34 +65,44 @@ export const projects: Project[] = [
     slug: "ziva",
     title: "Ziva",
     summary:
-      "Campus commerce marketplace for university students. Connects customers, vendors, riders, and admins so students can order products and services without scattered WhatsApp groups. Originally built for an Osun State University client.",
+      "A campus commerce marketplace built for university students, connecting customers, vendors, riders, and administrators through a unified ordering and delivery platform. Developed for a client serving the Osun State University community.",
 
     problem:
-      "University students rely on fragmented WhatsApp groups to buy and sell. No reliable orders, payments, delivery tracking, or vendor settlements — just chaos and dropped conversations.",
+      "Campus commerce was fragmented across WhatsApp groups, making it difficult to manage orders, coordinate deliveries, verify payments, and organize vendor operations. Ziva aims to bring these workflows into one platform.",
 
     approach:
-      "Building a multi-role platform: customers place orders, vendors manage inventory and fulfill, riders handle delivery zones, admins oversee the system. Payments via Paystack, OTP authentication, WhatsApp notifications through a GXU service, and a PWA with Firebase Cloud Messaging for push.",
+      "Building a multi-role marketplace with a Next.js frontend and an Express backend. The platform supports customer ordering, vendor inventory and order management, rider delivery workflows, and administrative operations. Firebase handles authentication and application data, while Paystack supports payment-related workflows. Baileys powers WhatsApp integration through a separately deployed service, with the backend hosted on a virtual machine. PWA capabilities and Firebase Cloud Messaging support app-like access and push notifications.",
 
     decisions:
-      "Chose Paystack for local payment reliability and settlements. OTP + WhatsApp keeps onboarding familiar for students. PWA + FCM so the app feels native without forcing an app-store install. Delivery zones and rider assignment modeled for campus-scale logistics rather than city-wide complexity.",
+      "Separated frontend and backend responsibilities to support independent development and deployment. Used Express for API and business logic, Firebase for application infrastructure, and a virtual machine for persistent backend services. Integrated WhatsApp through Baileys to support familiar communication workflows. Designed payment processing and vendor payouts around the project's operational constraints, with payment confirmation and settlement handled as distinct steps.",
 
     result:
-      "In active development after SiteNix. Core flows for orders, payments, vendor settlements, riders, OTP, and push notifications are being shipped iteratively. Designed to replace WhatsApp-group commerce on campus.",
+      "An ongoing client project with an evolving backend architecture and multi-role marketplace workflows. Development focuses on reliable order processing, payment verification, vendor operations, delivery coordination, and WhatsApp integration.",
 
     stack: [
       "Next.js",
       "TypeScript",
+      "Express.js",
+      "Node.js",
       "Firebase",
       "Paystack",
-      "Node.js",
+      "Baileys",
+      "Virtual Machine",
       "PWA",
-      "FCM",
-      "OTP Auth",
+      "Firebase Cloud Messaging",
     ],
+
     liveUrl: "https://zivamarketplace.com",
+
     images: [
-      { src: "/image-previews/ziva-home.png", alt: "Ziva Home Page" },
-      { src: "/image-previews/ziva-market.png", alt: "Ziva Market" }
+      {
+        src: "/image-previews/ziva-home.png",
+        alt: "Ziva Home Page",
+      },
+      {
+        src: "/image-previews/ziva-market.png",
+        alt: "Ziva Market",
+      },
     ],
 
     featured: true,
